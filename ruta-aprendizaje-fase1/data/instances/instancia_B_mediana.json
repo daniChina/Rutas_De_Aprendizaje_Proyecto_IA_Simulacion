@@ -1,0 +1,210 @@
+{
+  "instance_id": "instancia_B",
+  "nombre": "Instancia B — Mediana / Intermedia",
+  "descripcion": "22 cursos con ramificaciones en el grafo. Múltiples prerrequisitos convergen en nodos de L3 y L4. T_max=200h obliga a elegir entre trayectorias competidoras y evalúa la discriminación semántica del LLM.",
+  "t_max": 200,
+  "objetivo_usuario": "Quiero construir sistemas de recomendación inteligentes y aplicar machine learning supervisado y no supervisado en problemas reales.",
+  "cursos": [
+    {
+      "id": "CS_101",
+      "titulo": "Fundamentos de Programación en Python",
+      "descripcion": "Introduce los conceptos esenciales de la programación imperativa usando Python como lenguaje vehicular: variables, tipos de datos, estructuras de control, funciones y módulos. Se trabaja con entornos Jupyter Notebook y se practican ejercicios de lógica computacional básica. El estudiante aprende a leer, escribir y depurar código, desarrollando una mentalidad algorítmica aplicable a problemas reales de automatización y análisis de datos.",
+      "duracion_horas": 20,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_102",
+      "titulo": "Álgebra Lineal para Ciencia de Datos",
+      "descripcion": "Cubre los fundamentos matemáticos del álgebra lineal con énfasis en aplicaciones computacionales: vectores, matrices, operaciones tensoriales, transformaciones lineales, valores y vectores propios. Se estudian descomposiciones matriciales como SVD y PCA desde una perspectiva geométrica e intuitiva. El curso conecta directamente estos conceptos con su uso en algoritmos de machine learning, reducción de dimensionalidad y redes neuronales.",
+      "duracion_horas": 25,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_103",
+      "titulo": "Estadística y Probabilidad Básica",
+      "descripcion": "Introduce la teoría de probabilidad clásica y frecuentista, distribuciones de variables aleatorias discretas y continuas, esperanza, varianza y covarianza. Se abordan conceptos clave como el teorema de Bayes, la ley de los grandes números y el teorema del límite central. El estudiante aprende a describir e inferir propiedades de datos reales usando estadísticos descriptivos, intervalos de confianza y pruebas de hipótesis básicas.",
+      "duracion_horas": 25,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_104",
+      "titulo": "Introducción a Bases de Datos Relacionales",
+      "descripcion": "Presenta los fundamentos del modelo relacional: tablas, llaves primarias y foráneas, normalización y diagramas entidad-relación. El estudiante aprende a diseñar esquemas de bases de datos, formular consultas SQL (SELECT, JOIN, GROUP BY, subconsultas) y gestionar transacciones básicas. Se utilizan sistemas como PostgreSQL y SQLite para practicar escenarios de inserción, actualización, consulta y eliminación de datos estructurados.",
+      "duracion_horas": 20,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_105",
+      "titulo": "Lógica Computacional y Pensamiento Algorítmico",
+      "descripcion": "Desarrolla la capacidad de descomponer problemas complejos en subproblemas solucionables mediante técnicas como divide y vencerás, búsqueda, recursión y backtracking. Se estudian nociones de lógica proposicional y de predicados aplicadas al diseño de algoritmos correctos. El curso también introduce la notación asintótica (Big-O) para analizar la eficiencia temporal y espacial de las soluciones propuestas.",
+      "duracion_horas": 20,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_201",
+      "titulo": "Programación Orientada a Objetos con Python",
+      "descripcion": "Profundiza en el paradigma orientado a objetos aplicado en Python: clases, herencia, polimorfismo, encapsulamiento y composición. Se exploran patrones de diseño comunes (Factory, Strategy, Observer) y su aplicación en la construcción de pipelines de datos modulares y reutilizables. El estudiante practica el desarrollo de librerías propias y aprende a escribir código limpio, testeable y mantenible con unittest y pytest.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_101"
+      ]
+    },
+    {
+      "id": "CS_202",
+      "titulo": "Cálculo y Optimización Matemática",
+      "descripcion": "Revisa los fundamentos del cálculo diferencial multivariable con enfoque en optimización: gradientes, jacobianos, hessianos y regla de la cadena. Se estudian métodos de optimización convexa y no convexa: descenso de gradiente, métodos de segundo orden y algoritmos de optimización estocástica. El estudiante conecta la teoría con su aplicación directa en el entrenamiento de modelos de machine learning y el ajuste de hiperparámetros.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_102"
+      ]
+    },
+    {
+      "id": "CS_203",
+      "titulo": "Estadística Inferencial y Pruebas de Hipótesis",
+      "descripcion": "Extiende la estadística básica hacia la inferencia: estimación puntual y por intervalos, pruebas paramétricas y no paramétricas (t-test, ANOVA, chi-cuadrado, Mann-Whitney). Se introduce el marco bayesiano: prior, likelihood, posterior y actualización de creencias. El curso culmina con el diseño de experimentos controlados y el análisis de potencia estadística, habilidades críticas para la evaluación rigurosa de modelos de IA.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_103"
+      ]
+    },
+    {
+      "id": "CS_204",
+      "titulo": "SQL Avanzado y Modelado de Datos",
+      "descripcion": "Profundiza en SQL más allá de las consultas básicas: funciones de ventana, CTEs, procedimientos almacenados, índices y planes de ejecución. Se estudia el modelado dimensional (esquemas estrella y copo de nieve) orientado a analítica y reporting. El estudiante aprende a diagnosticar cuellos de botella en consultas, diseñar vistas materializadas y orquestar flujos de datos entre sistemas OLTP y OLAP.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_104"
+      ]
+    },
+    {
+      "id": "CS_205",
+      "titulo": "Estructuras de Datos y Algoritmos Avanzados",
+      "descripcion": "Cubre estructuras de datos fundamentales (grafos, árboles, heaps, tablas hash) y algoritmos clásicos sobre ellas: BFS, DFS, Dijkstra, A*, algoritmos de ordenamiento y búsqueda. Se estudia la dinámica de programación como técnica de optimización para problemas con subestructura óptima y subproblemas traslapados. El estudiante implementa estas estructuras en Python y analiza la complejidad de sus soluciones en contextos de ciencia de datos.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_101",
+        "CS_105"
+      ]
+    },
+    {
+      "id": "CS_301",
+      "titulo": "Análisis Exploratorio y Visualización de Datos",
+      "descripcion": "Enseña el ciclo completo del análisis exploratorio de datos (EDA): limpieza, transformación, detección de valores atípicos, manejo de valores nulos e imputación. Se trabaja con pandas, NumPy, Matplotlib, Seaborn y Plotly para construir visualizaciones informativas e interactivas. El estudiante aprende a formular y responder preguntas analíticas sobre datasets reales, comunicando hallazgos de forma visual y narrativa clara.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_201",
+        "CS_203"
+      ]
+    },
+    {
+      "id": "CS_302",
+      "titulo": "Machine Learning Supervisado",
+      "descripcion": "Introduce el paradigma del aprendizaje supervisado mediante regresión lineal/logística, árboles de decisión, Random Forests, SVMs y Gradient Boosting. Se estudian conceptos críticos como el bias-varianza tradeoff, la validación cruzada, las métricas de evaluación (ROC-AUC, F1, RMSE) y la regularización. El estudiante utiliza scikit-learn para construir, evaluar y comparar modelos sobre datasets reales de clasificación y regresión.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_202",
+        "CS_203",
+        "CS_201"
+      ]
+    },
+    {
+      "id": "CS_303",
+      "titulo": "Ingeniería de Datos y Pipelines ETL",
+      "descripcion": "Aborda el diseño e implementación de pipelines de extracción, transformación y carga (ETL) de datos a escala. Se estudian herramientas como Apache Airflow para orquestación, SQLAlchemy para acceso a bases de datos y formatos de intercambio como Parquet y Avro. El estudiante aprende a construir flujos de datos robustos, idempotentes y monitorizables, conectando fuentes heterogéneas (APIs, bases de datos, archivos) hacia un data warehouse centralizado.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_204",
+        "CS_201"
+      ]
+    },
+    {
+      "id": "CS_304",
+      "titulo": "Álgebra Lineal Numérica Aplicada a ML",
+      "descripcion": "Profundiza en los algoritmos numéricos que sustentan el álgebra lineal computacional: factorizaciones LU, QR y de Cholesky, métodos iterativos para sistemas lineales grandes y técnicas de diferenciación automática. Se estudia cómo las implementaciones de NumPy/SciPy explotan hardware BLAS/LAPACK y se analiza la estabilidad numérica de las operaciones. El curso conecta directamente estas técnicas con la implementación eficiente de capas neuronales y algoritmos de optimización.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_202",
+        "CS_205"
+      ]
+    },
+    {
+      "id": "CS_305",
+      "titulo": "Modelos Probabilísticos y Redes Bayesianas",
+      "descripcion": "Estudia los modelos gráficos probabilísticos: redes bayesianas, redes de Markov y modelos ocultos de Markov (HMM). Se introduce la inferencia exacta (eliminación de variables, propagación de creencias) e inferencia aproximada (métodos de Monte Carlo, variacional). El estudiante aprende a representar incertidumbre de forma estructurada, a aprender la estructura de redes desde datos y a aplicar estos modelos en diagnóstico, predicción y toma de decisiones bajo incertidumbre.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_203",
+        "CS_202"
+      ]
+    },
+    {
+      "id": "CS_401",
+      "titulo": "Machine Learning No Supervisado",
+      "descripcion": "Cubre las principales técnicas de aprendizaje sin etiquetas: clustering (K-Means, DBSCAN, clustering jerárquico), reducción de dimensionalidad (PCA, t-SNE, UMAP), detección de anomalías y modelos de mezcla de gaussianas (GMM). Se analiza la evaluación de modelos no supervisados mediante métricas internas (silueta, Davies-Bouldin) y externas. El estudiante aprende a descubrir estructura latente en datos de alta dimensión y a aplicarla en segmentación y análisis exploratorio avanzado.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_302",
+        "CS_304"
+      ]
+    },
+    {
+      "id": "CS_402",
+      "titulo": "Redes Neuronales y Deep Learning",
+      "descripcion": "Introduce el perceptrón multicapa, el algoritmo de backpropagation y las funciones de activación desde primeros principios. Se estudian arquitecturas profundas: redes convolucionales (CNN), recurrentes (RNN, LSTM, GRU) y sus variantes modernas. El estudiante implementa modelos desde cero con NumPy y luego con PyTorch, aprendiendo técnicas de regularización (Dropout, BatchNorm), ajuste de hiperparámetros y transferencia de aprendizaje para acelerar el entrenamiento.",
+      "duracion_horas": 50,
+      "prerrequisitos": [
+        "CS_302",
+        "CS_304"
+      ]
+    },
+    {
+      "id": "CS_403",
+      "titulo": "Big Data con Apache Spark",
+      "descripcion": "Presenta el paradigma de procesamiento distribuido con Apache Spark: RDDs, DataFrames, Spark SQL y el motor de ejecución lazy. Se estudia el ciclo completo de un job Spark: particionamiento, shuffle, persistencia y optimización con el Catalyst optimizer. El estudiante aprende a procesar datasets de terabytes en clústeres locales y en la nube (Databricks, EMR), implementando transformaciones complejas, joins a escala y pipelines de ML distribuido con Spark MLlib.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_303"
+      ]
+    },
+    {
+      "id": "CS_404",
+      "titulo": "Feature Engineering y Selección de Modelos",
+      "descripcion": "Profundiza en las técnicas de transformación e ingeniería de características que determinan el éxito de un modelo: codificación de variables categóricas, escalado, creación de interacciones, extracción de features temporales y geoespaciales. Se estudian métodos de selección de características: filtros estadísticos, métodos de envoltura (RFE) y métodos embebidos (LASSO, árboles). El estudiante aprende a diseñar experimentos de ablación para identificar qué características aportan valor real al modelo.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_301",
+        "CS_302"
+      ]
+    },
+    {
+      "id": "CS_405",
+      "titulo": "Inferencia Bayesiana y Métodos Variacionales",
+      "descripcion": "Extiende los modelos probabilísticos hacia la inferencia bayesiana escalable: métodos de Monte Carlo vía cadenas de Markov (MCMC), el algoritmo de Metropolis-Hastings y el muestreador de Gibbs. Se introduce la inferencia variacional, el ELBO y los modelos de variables latentes. El estudiante trabaja con PyMC y Stan para especificar y ajustar modelos bayesianos a datos reales, con aplicaciones en estimación de parámetros, predicción y cuantificación de incertidumbre epistémica.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_305",
+        "CS_302"
+      ]
+    },
+    {
+      "id": "CS_501",
+      "titulo": "Procesamiento de Lenguaje Natural (NLP)",
+      "descripcion": "Cubre el espectro completo del NLP moderno: tokenización, embeddings de palabras (Word2Vec, GloVe, FastText), modelos de secuencia a secuencia y el mecanismo de atención. Se estudian tareas fundamentales: clasificación de texto, reconocimiento de entidades nombradas (NER), análisis de sentimientos y resumen automático. El estudiante utiliza Hugging Face Transformers para hacer fine-tuning de modelos preentrenados sobre tareas específicas de dominio, integrando técnicas de augmentación de datos textuales.",
+      "duracion_horas": 45,
+      "prerrequisitos": [
+        "CS_402",
+        "CS_405"
+      ]
+    },
+    {
+      "id": "CS_503",
+      "titulo": "Sistemas de Recomendación",
+      "descripcion": "Estudia los paradigmas principales de los sistemas de recomendación: filtrado colaborativo (user-based, item-based, matrix factorization), filtrado basado en contenido e híbridos. Se abordan métricas de evaluación offline (NDCG, MAP, Precision@K) y los desafíos del mundo real: cold start, sesgo de popularidad y escalabilidad. El estudiante implementa sistemas de recomendación con Surprise, Implicit y PyTorch, explorando también enfoques modernos basados en grafos y transformers para secuencias de interacciones.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_401",
+        "CS_404"
+      ]
+    }
+  ]
+}

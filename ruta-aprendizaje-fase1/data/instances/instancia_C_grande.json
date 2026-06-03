@@ -1,0 +1,337 @@
+{
+  "instance_id": "instancia_C",
+  "nombre": "Instancia C — Grande / Compleja",
+  "descripcion": "Dataset completo de 35 cursos en 7 niveles. DAG denso con dependencias cruzadas entre ramas de NLP, Visión y Aprendizaje por Refuerzo. T_max=300h (≈23% del catálogo total) estressa el optimizador y hace crítica la señal semántica del LLM.",
+  "t_max": 300,
+  "objetivo_usuario": "Quiero especializarme en inteligencia artificial generativa, incluyendo modelos de lenguaje grande, agentes autónomos e IA generativa con modelos de difusión.",
+  "cursos": [
+    {
+      "id": "CS_101",
+      "titulo": "Fundamentos de Programación en Python",
+      "descripcion": "Introduce los conceptos esenciales de la programación imperativa usando Python como lenguaje vehicular: variables, tipos de datos, estructuras de control, funciones y módulos. Se trabaja con entornos Jupyter Notebook y se practican ejercicios de lógica computacional básica. El estudiante aprende a leer, escribir y depurar código, desarrollando una mentalidad algorítmica aplicable a problemas reales de automatización y análisis de datos.",
+      "duracion_horas": 20,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_102",
+      "titulo": "Álgebra Lineal para Ciencia de Datos",
+      "descripcion": "Cubre los fundamentos matemáticos del álgebra lineal con énfasis en aplicaciones computacionales: vectores, matrices, operaciones tensoriales, transformaciones lineales, valores y vectores propios. Se estudian descomposiciones matriciales como SVD y PCA desde una perspectiva geométrica e intuitiva. El curso conecta directamente estos conceptos con su uso en algoritmos de machine learning, reducción de dimensionalidad y redes neuronales.",
+      "duracion_horas": 25,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_103",
+      "titulo": "Estadística y Probabilidad Básica",
+      "descripcion": "Introduce la teoría de probabilidad clásica y frecuentista, distribuciones de variables aleatorias discretas y continuas, esperanza, varianza y covarianza. Se abordan conceptos clave como el teorema de Bayes, la ley de los grandes números y el teorema del límite central. El estudiante aprende a describir e inferir propiedades de datos reales usando estadísticos descriptivos, intervalos de confianza y pruebas de hipótesis básicas.",
+      "duracion_horas": 25,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_104",
+      "titulo": "Introducción a Bases de Datos Relacionales",
+      "descripcion": "Presenta los fundamentos del modelo relacional: tablas, llaves primarias y foráneas, normalización y diagramas entidad-relación. El estudiante aprende a diseñar esquemas de bases de datos, formular consultas SQL (SELECT, JOIN, GROUP BY, subconsultas) y gestionar transacciones básicas. Se utilizan sistemas como PostgreSQL y SQLite para practicar escenarios de inserción, actualización, consulta y eliminación de datos estructurados.",
+      "duracion_horas": 20,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_105",
+      "titulo": "Lógica Computacional y Pensamiento Algorítmico",
+      "descripcion": "Desarrolla la capacidad de descomponer problemas complejos en subproblemas solucionables mediante técnicas como divide y vencerás, búsqueda, recursión y backtracking. Se estudian nociones de lógica proposicional y de predicados aplicadas al diseño de algoritmos correctos. El curso también introduce la notación asintótica (Big-O) para analizar la eficiencia temporal y espacial de las soluciones propuestas.",
+      "duracion_horas": 20,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_201",
+      "titulo": "Programación Orientada a Objetos con Python",
+      "descripcion": "Profundiza en el paradigma orientado a objetos aplicado en Python: clases, herencia, polimorfismo, encapsulamiento y composición. Se exploran patrones de diseño comunes (Factory, Strategy, Observer) y su aplicación en la construcción de pipelines de datos modulares y reutilizables. El estudiante practica el desarrollo de librerías propias y aprende a escribir código limpio, testeable y mantenible con unittest y pytest.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_101"
+      ]
+    },
+    {
+      "id": "CS_202",
+      "titulo": "Cálculo y Optimización Matemática",
+      "descripcion": "Revisa los fundamentos del cálculo diferencial multivariable con enfoque en optimización: gradientes, jacobianos, hessianos y regla de la cadena. Se estudian métodos de optimización convexa y no convexa: descenso de gradiente, métodos de segundo orden y algoritmos de optimización estocástica. El estudiante conecta la teoría con su aplicación directa en el entrenamiento de modelos de machine learning y el ajuste de hiperparámetros.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_102"
+      ]
+    },
+    {
+      "id": "CS_203",
+      "titulo": "Estadística Inferencial y Pruebas de Hipótesis",
+      "descripcion": "Extiende la estadística básica hacia la inferencia: estimación puntual y por intervalos, pruebas paramétricas y no paramétricas (t-test, ANOVA, chi-cuadrado, Mann-Whitney). Se introduce el marco bayesiano: prior, likelihood, posterior y actualización de creencias. El curso culmina con el diseño de experimentos controlados y el análisis de potencia estadística, habilidades críticas para la evaluación rigurosa de modelos de IA.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_103"
+      ]
+    },
+    {
+      "id": "CS_204",
+      "titulo": "SQL Avanzado y Modelado de Datos",
+      "descripcion": "Profundiza en SQL más allá de las consultas básicas: funciones de ventana, CTEs, procedimientos almacenados, índices y planes de ejecución. Se estudia el modelado dimensional (esquemas estrella y copo de nieve) orientado a analítica y reporting. El estudiante aprende a diagnosticar cuellos de botella en consultas, diseñar vistas materializadas y orquestar flujos de datos entre sistemas OLTP y OLAP.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_104"
+      ]
+    },
+    {
+      "id": "CS_205",
+      "titulo": "Estructuras de Datos y Algoritmos Avanzados",
+      "descripcion": "Cubre estructuras de datos fundamentales (grafos, árboles, heaps, tablas hash) y algoritmos clásicos sobre ellas: BFS, DFS, Dijkstra, A*, algoritmos de ordenamiento y búsqueda. Se estudia la dinámica de programación como técnica de optimización para problemas con subestructura óptima y subproblemas traslapados. El estudiante implementa estas estructuras en Python y analiza la complejidad de sus soluciones en contextos de ciencia de datos.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_101",
+        "CS_105"
+      ]
+    },
+    {
+      "id": "CS_301",
+      "titulo": "Análisis Exploratorio y Visualización de Datos",
+      "descripcion": "Enseña el ciclo completo del análisis exploratorio de datos (EDA): limpieza, transformación, detección de valores atípicos, manejo de valores nulos e imputación. Se trabaja con pandas, NumPy, Matplotlib, Seaborn y Plotly para construir visualizaciones informativas e interactivas. El estudiante aprende a formular y responder preguntas analíticas sobre datasets reales, comunicando hallazgos de forma visual y narrativa clara.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_201",
+        "CS_203"
+      ]
+    },
+    {
+      "id": "CS_302",
+      "titulo": "Machine Learning Supervisado",
+      "descripcion": "Introduce el paradigma del aprendizaje supervisado mediante regresión lineal/logística, árboles de decisión, Random Forests, SVMs y Gradient Boosting. Se estudian conceptos críticos como el bias-varianza tradeoff, la validación cruzada, las métricas de evaluación (ROC-AUC, F1, RMSE) y la regularización. El estudiante utiliza scikit-learn para construir, evaluar y comparar modelos sobre datasets reales de clasificación y regresión.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_202",
+        "CS_203",
+        "CS_201"
+      ]
+    },
+    {
+      "id": "CS_303",
+      "titulo": "Ingeniería de Datos y Pipelines ETL",
+      "descripcion": "Aborda el diseño e implementación de pipelines de extracción, transformación y carga (ETL) de datos a escala. Se estudian herramientas como Apache Airflow para orquestación, SQLAlchemy para acceso a bases de datos y formatos de intercambio como Parquet y Avro. El estudiante aprende a construir flujos de datos robustos, idempotentes y monitorizables, conectando fuentes heterogéneas (APIs, bases de datos, archivos) hacia un data warehouse centralizado.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_204",
+        "CS_201"
+      ]
+    },
+    {
+      "id": "CS_304",
+      "titulo": "Álgebra Lineal Numérica Aplicada a ML",
+      "descripcion": "Profundiza en los algoritmos numéricos que sustentan el álgebra lineal computacional: factorizaciones LU, QR y de Cholesky, métodos iterativos para sistemas lineales grandes y técnicas de diferenciación automática. Se estudia cómo las implementaciones de NumPy/SciPy explotan hardware BLAS/LAPACK y se analiza la estabilidad numérica de las operaciones. El curso conecta directamente estas técnicas con la implementación eficiente de capas neuronales y algoritmos de optimización.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_202",
+        "CS_205"
+      ]
+    },
+    {
+      "id": "CS_305",
+      "titulo": "Modelos Probabilísticos y Redes Bayesianas",
+      "descripcion": "Estudia los modelos gráficos probabilísticos: redes bayesianas, redes de Markov y modelos ocultos de Markov (HMM). Se introduce la inferencia exacta (eliminación de variables, propagación de creencias) e inferencia aproximada (métodos de Monte Carlo, variacional). El estudiante aprende a representar incertidumbre de forma estructurada, a aprender la estructura de redes desde datos y a aplicar estos modelos en diagnóstico, predicción y toma de decisiones bajo incertidumbre.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_203",
+        "CS_202"
+      ]
+    },
+    {
+      "id": "CS_401",
+      "titulo": "Machine Learning No Supervisado",
+      "descripcion": "Cubre las principales técnicas de aprendizaje sin etiquetas: clustering (K-Means, DBSCAN, clustering jerárquico), reducción de dimensionalidad (PCA, t-SNE, UMAP), detección de anomalías y modelos de mezcla de gaussianas (GMM). Se analiza la evaluación de modelos no supervisados mediante métricas internas (silueta, Davies-Bouldin) y externas. El estudiante aprende a descubrir estructura latente en datos de alta dimensión y a aplicarla en segmentación y análisis exploratorio avanzado.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_302",
+        "CS_304"
+      ]
+    },
+    {
+      "id": "CS_402",
+      "titulo": "Redes Neuronales y Deep Learning",
+      "descripcion": "Introduce el perceptrón multicapa, el algoritmo de backpropagation y las funciones de activación desde primeros principios. Se estudian arquitecturas profundas: redes convolucionales (CNN), recurrentes (RNN, LSTM, GRU) y sus variantes modernas. El estudiante implementa modelos desde cero con NumPy y luego con PyTorch, aprendiendo técnicas de regularización (Dropout, BatchNorm), ajuste de hiperparámetros y transferencia de aprendizaje para acelerar el entrenamiento.",
+      "duracion_horas": 50,
+      "prerrequisitos": [
+        "CS_302",
+        "CS_304"
+      ]
+    },
+    {
+      "id": "CS_403",
+      "titulo": "Big Data con Apache Spark",
+      "descripcion": "Presenta el paradigma de procesamiento distribuido con Apache Spark: RDDs, DataFrames, Spark SQL y el motor de ejecución lazy. Se estudia el ciclo completo de un job Spark: particionamiento, shuffle, persistencia y optimización con el Catalyst optimizer. El estudiante aprende a procesar datasets de terabytes en clústeres locales y en la nube (Databricks, EMR), implementando transformaciones complejas, joins a escala y pipelines de ML distribuido con Spark MLlib.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_303"
+      ]
+    },
+    {
+      "id": "CS_404",
+      "titulo": "Feature Engineering y Selección de Modelos",
+      "descripcion": "Profundiza en las técnicas de transformación e ingeniería de características que determinan el éxito de un modelo: codificación de variables categóricas, escalado, creación de interacciones, extracción de features temporales y geoespaciales. Se estudian métodos de selección de características: filtros estadísticos, métodos de envoltura (RFE) y métodos embebidos (LASSO, árboles). El estudiante aprende a diseñar experimentos de ablación para identificar qué características aportan valor real al modelo.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_301",
+        "CS_302"
+      ]
+    },
+    {
+      "id": "CS_405",
+      "titulo": "Inferencia Bayesiana y Métodos Variacionales",
+      "descripcion": "Extiende los modelos probabilísticos hacia la inferencia bayesiana escalable: métodos de Monte Carlo vía cadenas de Markov (MCMC), el algoritmo de Metropolis-Hastings y el muestreador de Gibbs. Se introduce la inferencia variacional, el ELBO y los modelos de variables latentes. El estudiante trabaja con PyMC y Stan para especificar y ajustar modelos bayesianos a datos reales, con aplicaciones en estimación de parámetros, predicción y cuantificación de incertidumbre epistémica.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_305",
+        "CS_302"
+      ]
+    },
+    {
+      "id": "CS_501",
+      "titulo": "Procesamiento de Lenguaje Natural (NLP)",
+      "descripcion": "Cubre el espectro completo del NLP moderno: tokenización, embeddings de palabras (Word2Vec, GloVe, FastText), modelos de secuencia a secuencia y el mecanismo de atención. Se estudian tareas fundamentales: clasificación de texto, reconocimiento de entidades nombradas (NER), análisis de sentimientos y resumen automático. El estudiante utiliza Hugging Face Transformers para hacer fine-tuning de modelos preentrenados sobre tareas específicas de dominio, integrando técnicas de augmentación de datos textuales.",
+      "duracion_horas": 45,
+      "prerrequisitos": [
+        "CS_402",
+        "CS_405"
+      ]
+    },
+    {
+      "id": "CS_502",
+      "titulo": "Visión por Computadora con Deep Learning",
+      "descripcion": "Profundiza en la visión computacional moderna: convoluciones, pooling, receptive fields y arquitecturas CNN emblemáticas (VGG, ResNet, EfficientNet). Se estudian tareas de clasificación, detección de objetos (YOLO, Faster R-CNN) y segmentación semántica (U-Net). El estudiante aprende técnicas de data augmentation visual, transfer learning desde modelos preentrenados en ImageNet y optimización de inferencia para despliegue en dispositivos de borde mediante cuantización y prunning.",
+      "duracion_horas": 45,
+      "prerrequisitos": [
+        "CS_402"
+      ]
+    },
+    {
+      "id": "CS_503",
+      "titulo": "Sistemas de Recomendación",
+      "descripcion": "Estudia los paradigmas principales de los sistemas de recomendación: filtrado colaborativo (user-based, item-based, matrix factorization), filtrado basado en contenido e híbridos. Se abordan métricas de evaluación offline (NDCG, MAP, Precision@K) y los desafíos del mundo real: cold start, sesgo de popularidad y escalabilidad. El estudiante implementa sistemas de recomendación con Surprise, Implicit y PyTorch, explorando también enfoques modernos basados en grafos y transformers para secuencias de interacciones.",
+      "duracion_horas": 35,
+      "prerrequisitos": [
+        "CS_401",
+        "CS_404"
+      ]
+    },
+    {
+      "id": "CS_504",
+      "titulo": "MLOps y Ciclo de Vida del Modelo en Producción",
+      "descripcion": "Abarca las prácticas de ingeniería necesarias para llevar modelos de ML a producción de manera confiable: versionado de datos y modelos con DVC y MLflow, construcción de APIs de inferencia con FastAPI, containerización con Docker y despliegue en Kubernetes. Se estudia el monitoreo de modelos en producción: data drift, concept drift y degradación de rendimiento. El estudiante implementa un pipeline CI/CD completo para modelos de ML, integrando pruebas automáticas, registro de experimentos y rollback.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_404",
+        "CS_403"
+      ]
+    },
+    {
+      "id": "CS_505",
+      "titulo": "Aprendizaje por Refuerzo Clásico",
+      "descripcion": "Introduce los fundamentos del aprendizaje por refuerzo (RL): procesos de decisión de Markov (MDP), políticas, funciones de valor y el principio de optimalidad de Bellman. Se estudian algoritmos tabulares: programación dinámica, Monte Carlo, TD-learning, Q-Learning y SARSA. El estudiante implementa agentes que aprenden a jugar Gridworld y entornos de OpenAI Gym, comprendiendo el tradeoff exploración-explotación y las condiciones de convergencia de los distintos algoritmos.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_401",
+        "CS_405"
+      ]
+    },
+    {
+      "id": "CS_601",
+      "titulo": "Transformers y Modelos de Lenguaje Grande (LLMs)",
+      "descripcion": "Estudia en profundidad la arquitectura Transformer: atención multi-cabeza, codificación posicional, bloques encoder y decoder, y el mecanismo de atención cruzada. Se analiza el proceso de preentrenamiento (masked LM, autoregresivo) y el ajuste fino de modelos como BERT, GPT y T5. El estudiante aprende técnicas de eficiencia como LoRA, QLoRA y PEFT para adaptar LLMs a dominios específicos con recursos computacionales limitados, explorando además la evaluación de alucinaciones y sesgos.",
+      "duracion_horas": 50,
+      "prerrequisitos": [
+        "CS_501"
+      ]
+    },
+    {
+      "id": "CS_602",
+      "titulo": "Detección de Objetos y Segmentación Avanzada",
+      "descripcion": "Profundiza en las arquitecturas de detección de objetos de estado del arte: YOLO (v5 a v10), DETR y sus variantes basadas en transformers, así como las redes de propuesta de regiones (Faster R-CNN, Mask R-CNN). Se cubren técnicas de segmentación de instancias, segmentación panóptica y el modelo fundacional SAM (Segment Anything). El estudiante entrena detectores sobre datasets propios con anotaciones COCO y aprende estrategias de augmentación, anclaje y post-procesamiento (NMS) para producción.",
+      "duracion_horas": 45,
+      "prerrequisitos": [
+        "CS_502"
+      ]
+    },
+    {
+      "id": "CS_603",
+      "titulo": "Sistemas de Diálogo y Chatbots con IA",
+      "descripcion": "Cubre el diseño e implementación de sistemas conversacionales: gestión del diálogo, comprensión del lenguaje natural (NLU), generación de respuestas y manejo del contexto multi-turno. Se estudian frameworks como Rasa y LangChain para construir chatbots con memoria, herramientas externas e integración de bases de conocimiento (RAG). El estudiante implementa un asistente virtual completo con capacidades de recuperación de información, manejo de intenciones complejas y evaluación de la calidad del diálogo.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_501",
+        "CS_503"
+      ]
+    },
+    {
+      "id": "CS_604",
+      "titulo": "Ética, Equidad e IA Responsable",
+      "descripcion": "Examina los desafíos éticos y sociales del despliegue de sistemas de IA: sesgo algorítmico, equidad (fairness) en clasificadores, privacidad diferencial y transparencia. Se estudian marcos regulatorios como el EU AI Act y técnicas de explicabilidad (SHAP, LIME, Grad-CAM) para modelos de caja negra. El estudiante aprende a auditar modelos en busca de discriminación, a implementar salvaguardas técnicas y a articular responsabilidades organizacionales en el ciclo de vida de sistemas de IA de alto impacto.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_504",
+        "CS_501"
+      ]
+    },
+    {
+      "id": "CS_605",
+      "titulo": "Aprendizaje por Refuerzo Profundo (Deep RL)",
+      "descripcion": "Extiende el RL clásico hacia enfoques basados en redes neuronales: DQN (Deep Q-Network), métodos de política (REINFORCE, A2C, PPO) y métodos actor-crítico. Se estudia el aprendizaje por refuerzo profundo en entornos de alta dimensionalidad como Atari y MuJoCo, incluyendo técnicas de estabilización del entrenamiento (replay buffers, target networks). El estudiante implementa agentes capaces de aprender comportamientos complejos de extremo a extremo, analizando las condiciones de convergencia y la sensibilidad a hiperparámetros.",
+      "duracion_horas": 50,
+      "prerrequisitos": [
+        "CS_505",
+        "CS_402"
+      ]
+    },
+    {
+      "id": "CS_701",
+      "titulo": "Ingeniería de Prompts y LLMOps",
+      "descripcion": "Cubre las técnicas avanzadas de ingeniería de prompts: chain-of-thought, few-shot, zero-shot, ReAct y prompts estructurados para extracción de datos. Se estudian los patrones de orquestación de LLMs con LangChain y LlamaIndex, incluyendo RAG (Retrieval-Augmented Generation) sobre bases vectoriales (Chroma, Pinecone, Weaviate). El estudiante aprende a desplegar LLMs en producción: gestión de tokens, cacheo de prompts, evaluación automática con LLM-as-Judge y monitoreo de costos en entornos de alta concurrencia.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_601"
+      ]
+    },
+    {
+      "id": "CS_702",
+      "titulo": "Visión Computacional en Producción",
+      "descripcion": "Aborda el camino desde un modelo de visión entrenado hasta un sistema desplegado y monitorizado: exportación a ONNX y TensorRT, optimización de latencia mediante cuantización INT8 y prunning estructurado, e inferencia en dispositivos embebidos (Jetson, Raspberry Pi). Se estudian pipelines de vídeo en tiempo real con OpenCV y DeepStream, así como el diseño de sistemas de control de calidad visual automático. El estudiante construye y despliega un sistema de visión completo en un contenedor Docker con API REST.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_602",
+        "CS_504"
+      ]
+    },
+    {
+      "id": "CS_703",
+      "titulo": "Agentes Autónomos con IA y Sistemas Multi-Agente",
+      "descripcion": "Estudia el diseño de agentes de IA capaces de razonar, planificar y actuar en entornos dinámicos: arquitecturas ReAct, Reflexion y agentes basados en herramientas con uso de APIs externas, navegadores y código ejecutable. Se introduce el paradigma multi-agente: coordinación, negociación y diseño de flujos de trabajo con frameworks como AutoGen y CrewAI. El estudiante implementa un sistema multi-agente que resuelve tareas complejas de análisis y síntesis de información de forma autónoma y colaborativa.",
+      "duracion_horas": 45,
+      "prerrequisitos": [
+        "CS_601",
+        "CS_605"
+      ]
+    },
+    {
+      "id": "CS_704",
+      "titulo": "IA Generativa: Modelos de Difusión y GANs",
+      "descripcion": "Explora los principales paradigmas de generación de imágenes sintéticas: redes generativas antagónicas (GANs) y sus variantes (DCGAN, StyleGAN, CycleGAN) y modelos de difusión basados en score-matching y DDPM. Se estudia la arquitectura Stable Diffusion, el condicionamiento mediante CLIP y las técnicas de personalización (DreamBooth, LoRA para difusión). El estudiante genera, evalúa (FID, IS) y personaliza modelos generativos, analizando sus aplicaciones en síntesis de datos, augmentación y creatividad computacional.",
+      "duracion_horas": 50,
+      "prerrequisitos": [
+        "CS_602",
+        "CS_601"
+      ]
+    },
+    {
+      "id": "CS_705",
+      "titulo": "Proyecto Integrador de Sistemas de IA",
+      "descripcion": "Curso capstone que integra las competencias adquiridas a lo largo del programa en un proyecto de IA de extremo a extremo definido por el estudiante. Se cubre la propuesta del problema, revisión de literatura, diseño del dataset, experimentación sistemática, análisis de resultados y comunicación científica. El estudiante entrega un repositorio reproducible con código, notebooks, informe técnico y una demostración funcional del sistema, aplicando prácticas de MLOps, ética y diseño responsable a un problema de impacto real.",
+      "duracion_horas": 60,
+      "prerrequisitos": [
+        "CS_701",
+        "CS_703",
+        "CS_604"
+      ]
+    }
+  ]
+}

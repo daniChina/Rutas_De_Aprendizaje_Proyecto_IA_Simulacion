@@ -1,0 +1,101 @@
+{
+  "instance_id": "instancia_A",
+  "nombre": "Instancia A — Pequeña / Simple",
+  "descripcion": "10 cursos con dependencias predominantemente lineales. Diseñada como sanity check del algoritmo. Con T_max=80h, el espacio de soluciones factibles es reducido y verificable manualmente.",
+  "t_max": 80,
+  "objetivo_usuario": "Quiero aprender machine learning y deep learning desde los fundamentos hasta modelos de lenguaje.",
+  "cursos": [
+    {
+      "id": "CS_101",
+      "titulo": "Fundamentos de Programación en Python",
+      "descripcion": "Introduce los conceptos esenciales de la programación imperativa usando Python como lenguaje vehicular: variables, tipos de datos, estructuras de control, funciones y módulos. Se trabaja con entornos Jupyter Notebook y se practican ejercicios de lógica computacional básica. El estudiante aprende a leer, escribir y depurar código, desarrollando una mentalidad algorítmica aplicable a problemas reales de automatización y análisis de datos.",
+      "duracion_horas": 20,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_102",
+      "titulo": "Álgebra Lineal para Ciencia de Datos",
+      "descripcion": "Cubre los fundamentos matemáticos del álgebra lineal con énfasis en aplicaciones computacionales: vectores, matrices, operaciones tensoriales, transformaciones lineales, valores y vectores propios. Se estudian descomposiciones matriciales como SVD y PCA desde una perspectiva geométrica e intuitiva. El curso conecta directamente estos conceptos con su uso en algoritmos de machine learning, reducción de dimensionalidad y redes neuronales.",
+      "duracion_horas": 25,
+      "prerrequisitos": []
+    },
+    {
+      "id": "CS_201",
+      "titulo": "Programación Orientada a Objetos con Python",
+      "descripcion": "Profundiza en el paradigma orientado a objetos aplicado en Python: clases, herencia, polimorfismo, encapsulamiento y composición. Se exploran patrones de diseño comunes (Factory, Strategy, Observer) y su aplicación en la construcción de pipelines de datos modulares y reutilizables. El estudiante practica el desarrollo de librerías propias y aprende a escribir código limpio, testeable y mantenible con unittest y pytest.",
+      "duracion_horas": 25,
+      "prerrequisitos": [
+        "CS_101"
+      ]
+    },
+    {
+      "id": "CS_202",
+      "titulo": "Cálculo y Optimización Matemática",
+      "descripcion": "Revisa los fundamentos del cálculo diferencial multivariable con enfoque en optimización: gradientes, jacobianos, hessianos y regla de la cadena. Se estudian métodos de optimización convexa y no convexa: descenso de gradiente, métodos de segundo orden y algoritmos de optimización estocástica. El estudiante conecta la teoría con su aplicación directa en el entrenamiento de modelos de machine learning y el ajuste de hiperparámetros.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_102"
+      ]
+    },
+    {
+      "id": "CS_205",
+      "titulo": "Estructuras de Datos y Algoritmos Avanzados",
+      "descripcion": "Cubre estructuras de datos fundamentales (grafos, árboles, heaps, tablas hash) y algoritmos clásicos sobre ellas: BFS, DFS, Dijkstra, A*, algoritmos de ordenamiento y búsqueda. Se estudia la dinámica de programación como técnica de optimización para problemas con subestructura óptima y subproblemas traslapados. El estudiante implementa estas estructuras en Python y analiza la complejidad de sus soluciones en contextos de ciencia de datos.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_101",
+        "CS_105"
+      ]
+    },
+    {
+      "id": "CS_302",
+      "titulo": "Machine Learning Supervisado",
+      "descripcion": "Introduce el paradigma del aprendizaje supervisado mediante regresión lineal/logística, árboles de decisión, Random Forests, SVMs y Gradient Boosting. Se estudian conceptos críticos como el bias-varianza tradeoff, la validación cruzada, las métricas de evaluación (ROC-AUC, F1, RMSE) y la regularización. El estudiante utiliza scikit-learn para construir, evaluar y comparar modelos sobre datasets reales de clasificación y regresión.",
+      "duracion_horas": 40,
+      "prerrequisitos": [
+        "CS_202",
+        "CS_203",
+        "CS_201"
+      ]
+    },
+    {
+      "id": "CS_304",
+      "titulo": "Álgebra Lineal Numérica Aplicada a ML",
+      "descripcion": "Profundiza en los algoritmos numéricos que sustentan el álgebra lineal computacional: factorizaciones LU, QR y de Cholesky, métodos iterativos para sistemas lineales grandes y técnicas de diferenciación automática. Se estudia cómo las implementaciones de NumPy/SciPy explotan hardware BLAS/LAPACK y se analiza la estabilidad numérica de las operaciones. El curso conecta directamente estas técnicas con la implementación eficiente de capas neuronales y algoritmos de optimización.",
+      "duracion_horas": 30,
+      "prerrequisitos": [
+        "CS_202",
+        "CS_205"
+      ]
+    },
+    {
+      "id": "CS_402",
+      "titulo": "Redes Neuronales y Deep Learning",
+      "descripcion": "Introduce el perceptrón multicapa, el algoritmo de backpropagation y las funciones de activación desde primeros principios. Se estudian arquitecturas profundas: redes convolucionales (CNN), recurrentes (RNN, LSTM, GRU) y sus variantes modernas. El estudiante implementa modelos desde cero con NumPy y luego con PyTorch, aprendiendo técnicas de regularización (Dropout, BatchNorm), ajuste de hiperparámetros y transferencia de aprendizaje para acelerar el entrenamiento.",
+      "duracion_horas": 50,
+      "prerrequisitos": [
+        "CS_302",
+        "CS_304"
+      ]
+    },
+    {
+      "id": "CS_501",
+      "titulo": "Procesamiento de Lenguaje Natural (NLP)",
+      "descripcion": "Cubre el espectro completo del NLP moderno: tokenización, embeddings de palabras (Word2Vec, GloVe, FastText), modelos de secuencia a secuencia y el mecanismo de atención. Se estudian tareas fundamentales: clasificación de texto, reconocimiento de entidades nombradas (NER), análisis de sentimientos y resumen automático. El estudiante utiliza Hugging Face Transformers para hacer fine-tuning de modelos preentrenados sobre tareas específicas de dominio, integrando técnicas de augmentación de datos textuales.",
+      "duracion_horas": 45,
+      "prerrequisitos": [
+        "CS_402",
+        "CS_405"
+      ]
+    },
+    {
+      "id": "CS_601",
+      "titulo": "Transformers y Modelos de Lenguaje Grande (LLMs)",
+      "descripcion": "Estudia en profundidad la arquitectura Transformer: atención multi-cabeza, codificación posicional, bloques encoder y decoder, y el mecanismo de atención cruzada. Se analiza el proceso de preentrenamiento (masked LM, autoregresivo) y el ajuste fino de modelos como BERT, GPT y T5. El estudiante aprende técnicas de eficiencia como LoRA, QLoRA y PEFT para adaptar LLMs a dominios específicos con recursos computacionales limitados, explorando además la evaluación de alucinaciones y sesgos.",
+      "duracion_horas": 50,
+      "prerrequisitos": [
+        "CS_501"
+      ]
+    }
+  ]
+}

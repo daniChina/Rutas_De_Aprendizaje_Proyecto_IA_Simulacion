@@ -1,0 +1,18 @@
+# ============================================================
+# Dependencias del proyecto — Rutas de Aprendizaje Óptimas
+# Python 3.10+
+# ============================================================
+
+# --- LLM (Fase 2) ---
+openai>=1.30.0
+python-dotenv>=1.0.0
+tenacity>=8.2.0
+
+# --- Validación de datos ---
+pydantic>=2.0.0
+
+# --- Análisis y utilidades ---
+networkx>=3.0          # Operaciones sobre el grafo DAG (verificación, topológico)
+
+# --- Fase 3: Optimización (a completar) ---
+# scipy>=1.11.0        # Opcional: solver LP/ILP para comparativa

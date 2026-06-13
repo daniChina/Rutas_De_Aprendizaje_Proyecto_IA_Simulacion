@@ -12,28 +12,33 @@ con un Modelo de Lenguaje Grande (LLM) como evaluador semántico de utilidad.
 ruta-aprendizaje/
 ├── data/
 │   ├── raw/
-│   │   └── cursos.json              # Dataset base: 35 cursos (Fase 1)
-│   └── instances/
-│       ├── instancia_A_pequena.json # 10 cursos, T_max=80 h  — sanity check
-│       ├── instancia_B_mediana.json # 22 cursos, T_max=200 h — evaluación intermedia
-│       └── instancia_C_grande.json  # 35 cursos, T_max=300 h — estrés del optimizador
+│   │   └── cursos.json                  # Dataset base: 35 cursos (Fase 1)
+│   ├── instances/
+│   │   ├── instancia_A_pequena.json     # 10 cursos, T_max=80 h  — sanity check
+│   │   ├── instancia_B_mediana.json     # 22 cursos, T_max=200 h — evaluación intermedia
+│   │   └── instancia_C_grande.json      # 35 cursos, T_max=300 h — estrés del optimizador
+│   └── processed/                       # Instancias evaluadas por el LLM (Fase 2, generado)
 ├── docs/
-│   ├── fase1_modelado_formal.md     # Formalización matemática (Fase 1)
-│   └── fase2_llm_integracion.md     # Diseño de prompts y LLM (Fase 2, WIP)
+│   ├── fase1_modelado_formal.md         # Formalización matemática (Fase 1)
+│   └── fase2_llm_integracion.md         # Diseño de prompts y arquitectura LLM (Fase 2)
 ├── src/
-│   ├── problem.py                   # Modelo formal: DAG, nodos, restricciones
-│   ├── instance.py                  # Carga y validación de instancias JSON
-│   ├── run_example.py               # Script de demostración rápida
+│   ├── problem.py                       # Modelo formal: DAG, Course, LearningPathProblem
+│   ├── instance.py                      # Carga y serialización de instancias JSON
+│   ├── run_example.py                   # Demo Fase 1: carga instancias, valida DAG
+│   ├── run_fase2.py                     # Demo Fase 2: evaluación LLM del catálogo
 │   ├── llm/
-│   │   ├── client.py                # Wrapper de la API del LLM (Fase 2)
-│   │   ├── prompts.py               # Ingeniería de prompts (Fase 2)
-│   │   ├── models.py                # Modelos Pydantic de salida del LLM (Fase 2)
-│   │   └── cache.py                 # Caché local de respuestas LLM (Fase 2)
+│   │   ├── __init__.py                  # Exporta la interfaz pública del módulo
+│   │   ├── client.py                    # LLMClient: wrapper OpenAI con reintentos
+│   │   ├── prompts.py                   # System prompt (Few-Shot) + user prompt
+│   │   ├── models.py                    # EvaluacionCurso (Pydantic)
+│   │   ├── evaluator.py                 # evaluar_problema(), guardar_problema_evaluado()
+│   │   └── cache.py                     # Caché local de respuestas LLM
 │   └── solver/
-│       ├── baseline.py              # Solver clásico DP sin LLM (Fase 3)
-│       └── llm_assisted.py          # Solver híbrido con puntuación LLM (Fase 3)
+│       ├── baseline.py                  # Solver DP clásico (Fase 3)
+│       └── llm_assisted.py              # Solver híbrido LLM + DP (Fase 3)
 └── tests/
-    └── test_problem.py              # Pruebas unitarias del modelo de datos
+    ├── test_problem.py                  # 11 tests — Fase 1 ✅
+    └── test_llm_fase2.py                # 15 tests — Fase 2 ✅
 ```
 
 ---
@@ -42,9 +47,9 @@ ruta-aprendizaje/
 
 | Fase | Contenido | Estado |
 |------|-----------|--------|
-| **Fase 1** | Modelado formal + Dataset + Instancias de prueba | ✅ Completada |
-| **Fase 2** | Integración LLM + Prompts + Validación Pydantic | 🔄 En progreso |
-| **Fase 3** | Algoritmo clásico + Solver híbrido | ⏳ Pendiente |
+| **Fase 1** | Modelado formal + Dataset (35 cursos) + Instancias A/B/C | ✅ Completada |
+| **Fase 2** | LLM (Few-Shot, JSON mode, Pydantic, reintentos, caché) | ✅ Completada |
+| **Fase 3** | Algoritmo DP clásico + Solver híbrido | ⏳ Pendiente |
 | **Fase 4** | Experimentos + Informe técnico | ⏳ Pendiente |
 
 ---
@@ -52,63 +57,79 @@ ruta-aprendizaje/
 ## Instalación
 
 ```bash
-# Clonar el repositorio
 git clone <URL_DEL_REPO>
 cd ruta-aprendizaje
 
-# Crear entorno virtual (recomendado)
 python -m venv .venv
-source .venv/bin/activate        # Linux / macOS
-# .venv\Scripts\activate         # Windows
+source .venv/bin/activate      # Linux / macOS
+# .venv\Scripts\activate       # Windows
 
-# Instalar dependencias
 pip install -r requirements.txt
 
-# Configurar credenciales LLM (Fase 2)
 cp .env.example .env
-# Editar .env con tu OPENAI_API_KEY
+# Editar .env y agregar OPENAI_API_KEY=sk-...
 ```
 
 ---
 
-## Ejecución rápida (Fase 1)
+## Ejecución
 
+### Fase 1 — Verificar dataset e instancias
 ```bash
-# Verificar el dataset y las instancias de prueba
 python src/run_example.py
 ```
+Valida el DAG de los 35 cursos, muestra el orden topológico y verifica las 3 instancias.
 
-La salida muestra:
-- Validación del DAG (sin ciclos)
-- Número de nodos, aristas y duración total
-- Información de cada instancia de prueba (cursos incluidos, T_max, duración alcanzable)
+### Fase 2 — Evaluación semántica con el LLM
+```bash
+python src/run_fase2.py
+```
+Carga la Instancia A (10 cursos), llama al LLM para asignar `u(v) ∈ [1,10]` a cada
+curso y guarda el resultado en `data/processed/instancia_A_evaluada.json`.
+
+### Tests
+```bash
+# Todos los tests (sin pytest)
+python tests/test_problem.py
+python tests/test_llm_fase2.py
+
+# Con pytest (si está instalado)
+python -m pytest tests/ -v
+```
 
 ---
 
-## Dataset
+## Arquitectura del sistema híbrido
 
-El archivo `data/raw/cursos.json` contiene **35 cursos** del dominio
-*"Ciencia de Datos e Inteligencia Artificial"* organizados en 7 niveles de profundidad
-(L0–L6) que forman un **Grafo Dirigido Acíclico (DAG)** verificado.
-
-- Duración por curso: entre 10 y 60 horas
-- Duración total del catálogo: 1 295 horas
-- Prerrequisitos: aristas del DAG, sin ciclos
-
-Consulta `docs/fase1_modelado_formal.md` para la formalización matemática completa.
+```
+cursos.json  (Fase 1)
+     │
+     ▼
+LearningPathProblem          ← src/problem.py + src/instance.py
+     │
+     ▼  evaluar_problema()   ← src/llm/evaluator.py
+LLMClient.evaluar_curso()    ← src/llm/client.py
+  │  └─ construir_system_prompt()  ← Few-Shot + JSON Schema
+  │  └─ construir_user_prompt()    ← objetivo + descripción del curso
+  ▼
+EvaluacionCurso (Pydantic)   ← src/llm/models.py  →  u(v) ∈ [1,10]
+     │
+     ▼
+LearningPathProblem con u(v) → data/processed/*_evaluada.json
+     │
+     ▼  (Fase 3)
+dp_knapsack_dag()            ← src/solver/baseline.py
+     │
+     ▼
+S* ⊆ V  (ruta óptima)
+```
 
 ---
 
 ## Referencia rápida del modelo formal
 
-El problema se modela como:
-
 $$S^* = \underset{S \subseteq V}{\arg\max} \sum_{v \in S} u(v)$$
 
-sujeto a:
+sujeto a $\sum_{v \in S} d(v) \leq T_{\max}$ y a la clausura de prerrequisitos del DAG.
 
-$$\sum_{v \in S} d(v) \leq T_{\max}$$
-$$\forall\, v_j \in S,\; \forall\, (v_i, v_j) \in E \;\Rightarrow\; v_i \in S$$
-
-donde $u(v) \in [1,10]$ es la utilidad semántica asignada por el LLM y $d(v)$ es la
-duración en horas del curso $v$.
+donde $u(v) = \mathcal{F}_{\text{LLM}}(\text{desc}(v),\; \text{objetivo})$ y $d(v)$ es la duración en horas.

@@ -25,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from pydantic import ValidationError
 
 from src.llm.models import EvaluacionCurso
+from src.llm.client import LLMClient, _Backend
 from src.llm.prompts import construir_system_prompt, construir_user_prompt
 from src.llm.cache import LLMCache
 from src.llm.evaluator import evaluar_problema, guardar_problema_evaluado, resumen_evaluacion
@@ -160,6 +161,40 @@ def test_cache_persiste_en_disco():
         cache2 = LLMCache(cache_path)
         assert cache2.get("k") == "v"
     print("✓ test_cache_persiste_en_disco")
+
+
+def test_llmclient_usa_cache_en_llamadas_repetidas():
+    raw_response = json.dumps({
+        "curso_id": "CACHE_TEST",
+        "utilidad_relativa": 8,
+        "justificacion_breve": "Esta justificacion es suficientemente larga para pasar la validacion.",
+    })
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        cache_path = str(Path(tmpdir) / "cache.json")
+
+        with patch("src.llm.client._build_backend") as mock_build_backend, \
+             patch.object(LLMClient, "_call", return_value=raw_response) as mock_call:
+            mock_build_backend.return_value = _Backend(
+                name="mock",
+                model="mock-model",
+                _call_fn=lambda prompt: raw_response,
+            )
+            client = LLMClient(cache_path=cache_path)
+            curso = {"id": "CACHE_TEST", "titulo": "Curso cache", "descripcion": "Descripcion."}
+
+            evaluacion1 = client.evaluar_curso(curso, "Objetivo de prueba")
+            assert evaluacion1 is not None
+            assert evaluacion1.curso_id == "CACHE_TEST"
+            assert mock_call.call_count == 1
+
+            evaluacion2 = client.evaluar_curso(curso, "Objetivo de prueba")
+            assert evaluacion2 is not None
+            assert evaluacion2.curso_id == "CACHE_TEST"
+            assert mock_call.call_count == 1, "El segundo intento debería provenir del cache"
+            assert Path(cache_path).exists()
+
+    print("✓ test_llmclient_usa_cache_en_llamadas_repetidas")
 
 
 # ---------------------------------------------------------------------------

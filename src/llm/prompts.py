@@ -37,7 +37,8 @@ OUTPUT_SCHEMA = {
         },
         "justificacion_breve": {
             "type": "string",
-            "description": "Justificación concisa de 1 a 3 oraciones."
+            "description": "Justificación concisa de 1 a 3 oraciones.",
+            "maxLength": 600,
         }
     },
     "required": ["curso_id", "utilidad_relativa", "justificacion_breve"],
@@ -190,7 +191,7 @@ explicaciones fuera del JSON, sin bloques de código markdown.
 {schema_str}
 
 - Si recibes un curso cuyo ID no reconoces, usa el ID tal como te fue proporcionado.
-- La justificacion_breve debe ser concisa (1-3 oraciones) y referenciar explícitamente \
+- La justificacion_breve debe ser concisa (1-3 oraciones, máximo 600 caracteres) y referenciar explícitamente \
 elementos del objetivo del usuario y de la descripción del curso.
 
 ## Ejemplos de Referencia (Few-Shot)

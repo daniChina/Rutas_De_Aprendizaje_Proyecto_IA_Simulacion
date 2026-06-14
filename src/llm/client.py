@@ -32,6 +32,7 @@ Variables de entorno relevantes:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -47,10 +48,11 @@ from tenacity import (
     before_sleep_log,
 )
 
+from .cache import LLMCache
 from .prompts import construir_system_prompt, construir_user_prompt
 from .models import EvaluacionCurso
 
-load_dotenv()
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '../../.env'))
 logger = logging.getLogger(__name__)
 
 # ── Cache del system prompt (invariante por sesión) ──────────────────────────
@@ -58,8 +60,8 @@ _SYSTEM_PROMPT: str = construir_system_prompt()
 
 # ── Modelos por defecto de cada proveedor ────────────────────────────────────
 _DEFAULT_MODEL: dict[str, str] = {
-    "gemini": "gemini-2.5-flash",
     "groq":   "llama-3.3-70b-versatile",
+    "gemini": "gemini-2.5-flash",
     "openai": "gpt-4o-mini",
 }
 
@@ -79,21 +81,36 @@ def _is_quota_error(exc: Exception) -> bool:
     # ── Errores de Google Gemini ─────────────────────────────────────────────
     try:
         from google.api_core.exceptions import (
-            ResourceExhausted,   # 429 — cuota diaria agotada
-            ServiceUnavailable,  # 503 — servicio caído
-            DeadlineExceeded,    # timeout tras reintentos
+            ResourceExhausted,    # 429 — cuota diaria agotada
+            ServiceUnavailable,   # 503 — servicio caído
+            DeadlineExceeded,     # timeout tras reintentos
+            InternalServerError,  # 500 — error interno del servidor
         )
-        if isinstance(exc, (ResourceExhausted, ServiceUnavailable, DeadlineExceeded)):
+        if isinstance(exc, (ResourceExhausted, ServiceUnavailable, DeadlineExceeded, InternalServerError)):
             return True
     except ImportError:
         pass
 
+    # ── Detección genérica por código HTTP (cubre ServerError y similares) ───
+    if hasattr(exc, "code") and getattr(exc, "code") in (429, 500, 503):
+        return True
+    # Algunos SDKs exponen el código en .status_code en lugar de .code
+    if hasattr(exc, "status_code") and getattr(exc, "status_code") in (429, 500, 503):
+        return True
+    # Por si el mensaje contiene el código (último recurso)
+    msg = str(exc).lower()
+    if "503" in msg or "unavailable" in msg or "rate limit" in msg:
+        return True
+
     # ── Errores de OpenAI / Groq ─────────────────────────────────────────────
     try:
-        from openai import RateLimitError, APIConnectionError, AuthenticationError
+        from openai import RateLimitError, APIConnectionError, APIStatusError, AuthenticationError
         if isinstance(exc, AuthenticationError):
-            return False        # clave inválida → no hacer fallback
+            return False  # clave inválida → no hacer fallback
         if isinstance(exc, (RateLimitError, APIConnectionError)):
+            return True
+        # APIStatusError cubre 500/503 de OpenAI y Groq
+        if isinstance(exc, APIStatusError) and exc.status_code in (429, 500, 503):
             return True
     except ImportError:
         pass
@@ -178,7 +195,12 @@ def _build_gemini_backend(model: str) -> _Backend:
                 max_output_tokens=350,
             ),
         )
-        return response.text or ""
+        texto = response.text or ""
+    
+        if not texto.strip():
+            from google.api_core.exceptions import ServiceUnavailable
+            raise ServiceUnavailable("Gemini devolvió respuesta vacía")
+        return texto
 
     return _Backend(name="gemini", model=model, _call_fn=_call)
 
@@ -212,7 +234,7 @@ def _build_openai_backend(provider_name: str, model: str) -> _Backend:
                 {"role": "system", "content": _SYSTEM_PROMPT},
                 {"role": "user",   "content": user_prompt},
             ],
-            max_tokens=350,
+            max_tokens=150,
         )
         return response.choices[0].message.content or ""
 
@@ -233,8 +255,18 @@ def _build_backend(provider: str, model: Optional[str] = None) -> _Backend:
         raise ValueError(
             f"LLM_PROVIDER='{provider}' no reconocido. "
             "Valores válidos: 'gemini', 'groq', 'openai'."
-        )
 
+
+        )
+# ── Utilidad: limpiar bloques markdown de la respuesta ───────
+def _limpiar_json(texto: str) -> str:
+    """Elimina bloques ```json ... ``` que algunos modelos añaden."""
+    texto = texto.strip()
+    if texto.startswith("```"):
+        lineas = texto.splitlines()
+        lineas = [l for l in lineas if not l.strip().startswith("```")]
+        texto = "\n".join(lineas).strip()
+    return texto
 
 # ─────────────────────────────────────────────────────────────────────────────
 # LLMClient — interfaz pública con fallback automático
@@ -252,16 +284,18 @@ class LLMClient:
       - El cambio se loguea claramente para que quede en el informe.
 
     Uso:
-        client = LLMClient()
+        client = LLMClient(cache_path=".llm_cache.json")
         evaluacion = client.evaluar_curso(curso_dict, objetivo_str)
     """
 
-    def __init__(self) -> None:
-        primary_name    = os.getenv("LLM_PROVIDER", "gemini").lower().strip()
+    def __init__(self, cache_path: Optional[str] = ".llm_cache.json") -> None:
+        primary_name    = os.getenv("LLM_PROVIDER", "groq").lower().strip()
         primary_model   = os.getenv("LLM_MODEL")
+        print(f"LLM_PROVIDER: '{primary_name}' | LLM_MODEL: '{primary_model or _DEFAULT_MODEL.get(primary_name, 'N/A')}'")
+        
 
         # Fallback por defecto: groq si el primario es gemini, sino None
-        default_fallback = "groq" if primary_name == "gemini" else None
+        default_fallback = "gemini" if primary_name == "groq" else None
         fallback_name   = os.getenv("LLM_FALLBACK_PROVIDER", default_fallback or "").lower().strip() or None
         fallback_model  = os.getenv("LLM_FALLBACK_MODEL")
 
@@ -286,6 +320,24 @@ class LLMClient:
                 )
 
         self._active_idx: int = 0   # índice del proveedor activo en _chain
+        self._cache: Optional[LLMCache] = LLMCache(cache_path) if cache_path else None
+        if self._cache is not None:
+            stats = self._cache.stats()
+            logger.info(
+                "Caché LLM activa: %s (%d entradas, %.1f KB)",
+                stats["path"], stats["entries"], stats["size_kb"],
+            )
+
+    def _cache_key(self, user_prompt: str) -> str:
+        """Construye una clave determinista a partir del system prompt y el user prompt.
+        El user prompt ya contiene el objetivo del usuario y los datos del curso,
+        por lo que dos evaluaciones del mismo curso con distinto objetivo producen
+        claves distintas (comportamiento correcto).
+        """
+        digest = hashlib.sha256(
+            (f"{_SYSTEM_PROMPT}\n{user_prompt}").encode("utf-8")
+        ).hexdigest()
+        return digest
 
     # ── Propiedades de estado ─────────────────────────────────────────────────
 
@@ -366,12 +418,40 @@ class LLMClient:
         curso_id = curso.get("id", "DESCONOCIDO")
         user_prompt = construir_user_prompt(objetivo_usuario, curso)
 
-        try:
-            raw = self._call(user_prompt)
-            datos = json.loads(raw)
+        def _parse_response(raw_text: str) -> EvaluacionCurso:
+            raw_limpio = _limpiar_json(raw_text)
+            if not raw_limpio:
+                raise ValueError("El LLM devolvió una respuesta vacía")
+            datos = json.loads(raw_limpio)
             datos.setdefault("curso_id", curso_id)
-            evaluacion = EvaluacionCurso.model_validate(datos)
+            return EvaluacionCurso.model_validate(datos)
 
+        def _evaluate() -> EvaluacionCurso:
+            cache_key = self._cache_key(user_prompt) if self._cache else None
+            if cache_key is not None:
+                cached = self._cache.get(cache_key)
+                if cached is not None:
+                    logger.info("♫ Cache hit para curso %s", curso_id)
+                    try:
+                        return _parse_response(cached)
+                    except (json.JSONDecodeError, ValidationError, ValueError) as e:
+                        logger.warning(
+                            "Cache inválida para curso %s: %s. Ignorando entrada cacheada.",
+                            curso_id,
+                            e,
+                        )
+
+            raw = self._call(user_prompt)
+            evaluacion = _parse_response(raw)
+
+            if cache_key is not None:
+                self._cache.set(cache_key, raw)
+                logger.info("♫ Cache guardada para curso %s", curso_id)
+
+            return evaluacion
+
+        try:
+            evaluacion = _evaluate()
             logger.info(
                 "✓ [%s] u=%d/10 [%s] | %s",
                 evaluacion.curso_id,
@@ -383,10 +463,44 @@ class LLMClient:
             )
             return evaluacion
 
-        except json.JSONDecodeError as e:
-            logger.error("✗ [%s] Respuesta no es JSON válido: %s", curso_id, e)
-        except ValidationError as e:
-            logger.error("✗ [%s] Validación Pydantic fallida:\n%s", curso_id, e)
+        except (json.JSONDecodeError, ValidationError, ValueError) as e:
+            if self._active_idx + 1 < len(self._chain):
+                logger.warning(
+                    "⚠ [%s] Respuesta inválida desde '%s': %s. Intentando fallback a '%s'.",
+                    curso_id,
+                    self.provider,
+                    e,
+                    self._chain[self._active_idx + 1].name,
+                )
+                self._active_idx += 1
+                try:
+                    evaluacion = _evaluate()
+                    logger.info(
+                        "✓ [%s] u=%d/10 [%s] | %s",
+                        evaluacion.curso_id,
+                        evaluacion.utilidad_relativa,
+                        self.provider,
+                        (evaluacion.justificacion_breve[:70] + "…")
+                        if len(evaluacion.justificacion_breve) > 70
+                        else evaluacion.justificacion_breve,
+                    )
+                    return evaluacion
+                except (json.JSONDecodeError, ValidationError, ValueError, Exception) as fallback_exc:
+                    logger.error(
+                        "✗ [%s] El fallback '%s' también falló: %s",
+                        curso_id,
+                        self.provider,
+                        fallback_exc,
+                    )
+                    return None
+
+            if isinstance(e, json.JSONDecodeError):
+                logger.error("✗ [%s] Respuesta no es JSON válido: %s", curso_id, e)
+            elif isinstance(e, ValidationError):
+                logger.error("✗ [%s] Validación Pydantic fallida:\n%s", curso_id, e)
+            else:
+                logger.error("✗ [%s] El LLM devolvió una respuesta vacía", curso_id)
+
         except Exception as e:
             logger.error("✗ [%s] Error irrecuperable (%s): %s", curso_id, type(e).__name__, e)
 
@@ -396,7 +510,10 @@ class LLMClient:
         fallback_info = (
             f" → fallback={self._chain[1].name}" if len(self._chain) > 1 else ""
         )
+        cache_info = (
+            f", cache={self._cache._path}" if self._cache else ", cache=off"
+        )
         return (
             f"LLMClient(active={self.provider!r}, model={self.model!r}"
-            f"{fallback_info})"
+            f"{fallback_info}{cache_info})"
         )

@@ -39,3 +39,11 @@ class LLMCache:
 
     def __len__(self) -> int:
         return len(self._data)
+
+    def stats(self) -> dict:
+        """Devuelve estadísticas básicas del caché para logging y el informe."""
+        return {
+            "path": str(self._path),
+            "entries": len(self._data),
+            "size_kb": round(self._path.stat().st_size / 1024, 1) if self._path.exists() else 0,
+        }

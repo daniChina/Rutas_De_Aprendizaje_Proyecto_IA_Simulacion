@@ -43,7 +43,7 @@ def main() -> None:
     # ------------------------------------------------------------------
     # 1. Cargar instancia de prueba
     # ------------------------------------------------------------------
-    instance_path = Path("data/instances/instancia_A_pequena.json")
+    instance_path = Path("data/instances/instancia_B_mediana.json")
 
     if not instance_path.exists():
         logger.error("Instancia no encontrada: %s", instance_path)

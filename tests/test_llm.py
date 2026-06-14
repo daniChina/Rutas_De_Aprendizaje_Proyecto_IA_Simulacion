@@ -22,7 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.llm.client import LLMClient, LLM_PROVIDER
+from src.llm.client import LLMClient
 
 
 # Curso y objetivo de prueba (no consume el catálogo real)
@@ -66,6 +66,8 @@ def main() -> None:
 
     if evaluacion is None:
         print("✗ El LLM no devolvió una respuesta válida.")
+        print(f"  proveedor final : {client.provider}")
+        print(f"  fallback activado : {'sí' if client.using_fallback else 'no'}")
         print("  Revisa los logs anteriores para más detalles.")
         sys.exit(1)
 
@@ -73,6 +75,11 @@ def main() -> None:
     print(f"  curso_id           : {evaluacion.curso_id}")
     print(f"  utilidad_relativa  : {evaluacion.utilidad_relativa}/10")
     print(f"  justificacion      : {evaluacion.justificacion_breve}")
+    print(f"  proveedor final    : {client.provider}")
+    if client.using_fallback:
+        print("  fallback activado  : sí")
+    else:
+        print("  fallback activado  : no")
     print()
     print("El proveedor está listo. Puedes ejecutar:")
     print("  python src/run_fase2.py")

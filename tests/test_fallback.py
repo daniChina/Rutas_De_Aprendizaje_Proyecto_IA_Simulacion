@@ -267,6 +267,32 @@ def test_evaluar_curso_usa_fallback_transparentemente():
     print("✓ test_evaluar_curso_usa_fallback_transparentemente")
 
 
+def test_evaluar_curso_fallback_en_json_invalido():
+    """Si el primario devuelve JSON inválido, el fallback se activa."""
+    from src.llm.client import _Backend, LLMClient
+
+    primary_fn  = MagicMock(return_value="{invalid json}")
+    fallback_fn = MagicMock(return_value=RESPUESTA_VALIDA)
+
+    primary  = _Backend("gemini", "gemini-2.5-flash",        _call_fn=primary_fn)
+    fallback = _Backend("groq",   "llama-3.3-70b-versatile", _call_fn=fallback_fn)
+
+    client = object.__new__(LLMClient)
+    client._chain = [primary, fallback]
+    client._active_idx = 0
+
+    with patch("src.llm.client.construir_user_prompt", return_value="prompt"):
+        curso = {"id": "CS_101", "titulo": "Python", "descripcion": "Curso base."}
+        result = client.evaluar_curso(curso, "Aprender ML")
+
+    assert result is not None
+    assert result.curso_id == "CS_101"
+    assert result.utilidad_relativa == 8
+    assert client.provider == "groq"
+    assert client.using_fallback
+    print("✓ test_evaluar_curso_fallback_en_json_invalido")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Runner
 # ─────────────────────────────────────────────────────────────────────────────
@@ -285,6 +311,7 @@ if __name__ == "__main__":
         test_ambos_fallan_propaga_ultimo_error,
         test_provider_y_model_reflejan_activo,
         test_evaluar_curso_usa_fallback_transparentemente,
+        test_evaluar_curso_fallback_en_json_invalido,
     ]
 
     passed = failed = 0

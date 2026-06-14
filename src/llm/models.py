@@ -42,7 +42,7 @@ class EvaluacionCurso(BaseModel):
     )
     justificacion_breve: str = Field(
         min_length=20,
-        max_length=300,
+        max_length=600,
         description=(
             "Explicación concisa (1-3 oraciones) de por qué el curso tiene esa "
             "puntuación en relación al objetivo declarado por el usuario."

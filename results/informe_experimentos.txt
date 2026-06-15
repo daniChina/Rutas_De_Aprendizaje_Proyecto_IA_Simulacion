@@ -1,0 +1,133 @@
+======================================================================
+INFORME DE EXPERIMENTOS — SISTEMA DE RUTAS DE APRENDIZAJE
+======================================================================
+Fecha de ejecución : 2026-06-14 22:30:11
+Experimentos       : 5 ejecutados
+Exitosos / Fallidos: 5 / 0
+
+──────────────────────────────────────────────────────────────────────
+Experimento 1: Impacto del número de iteraciones Monte Carlo
+  Estado  : ✓ Completado
+  Tiempo  : 3.98 s
+  n_iter  |  u_media  |  u_std  |  t_medio_s
+      50  |    48.90  |  0.316  |      0.0025
+     100  |    49.00  |  0.000  |      0.0047
+     250  |    49.00  |  0.000  |      0.0103
+     500  |    49.00  |  0.000  |      0.0219
+    1000  |    49.00  |  0.000  |      0.0424
+    2000  |    49.00  |  0.000  |      0.0983
+    5000  |    49.00  |  0.000  |      0.2171
+
+──────────────────────────────────────────────────────────────────────
+Experimento 1b: Curvas de convergencia Monte Carlo (complemento Exp. 1)
+  Estado  : ✓ Completado
+  Tiempo  : 1.89 s
+  Curvas de convergencia (u_media por checkpoint):
+    iter=   10  u=22.00
+    iter=   25  u=22.00
+    iter=   50  u=22.00
+
+──────────────────────────────────────────────────────────────────────
+Experimento 2: Impacto de la temperatura en diversidad y utilidad
+  Estado  : ✓ Completado
+  Tiempo  : 5.17 s
+  temp  |  u_media  |  u_std  |  jaccard  |  diversidad
+   0.1  |    46.00  |  0.000  |   1.0000  |     0.0000
+   0.3  |    48.60  |  0.507  |   0.6814  |     0.3186
+   0.5  |    49.00  |  0.000  |   0.8942  |     0.1058
+   1.0  |    49.00  |  0.000  |   0.8942  |     0.1058
+   1.5  |    49.00  |  0.000  |   0.8857  |     0.1143
+   2.0  |    49.00  |  0.000  |   0.8815  |     0.1185
+   3.0  |    49.00  |  0.000  |   0.8942  |     0.1058
+   5.0  |    49.00  |  0.000  |   0.8815  |     0.1185
+
+──────────────────────────────────────────────────────────────────────
+Experimento 3: Escalabilidad en instancias A, B, C
+  Estado  : ✓ Completado
+  Tiempo  : 2.81 s
+  inst  |  n  |  dp_u  |  dp_t_s  |  gr_u  |  gr_gap%  |  mc_u  |  mc_t_s
+     A  |  10  |   22.00  |    0.0002  |   22.00  |      0.0  |   22.00  |   0.0245
+     B  |  22  |   34.00  |    0.0014  |   48.00  |    -41.2  |   49.00  |   0.0989
+     C  |  35  |   58.00  |    0.0023  |   72.00  |    -24.1  |   81.00  |   0.1569
+
+──────────────────────────────────────────────────────────────────────
+Experimento 4: Robustez: P(factibilidad) para distintas rutas
+  Estado  : ✓ Completado
+  Tiempo  : 2.81 s
+  inst  |  ruta               |  cv  |  P(fact)  |  riesgo
+  ···
+     A  |  dp_optima             |  0.10  |   87.36%  |  MEDIO (70% ≤ p < 90%)
+     A  |  dp_optima             |  0.20  |   74.14%  |  MEDIO (70% ≤ p < 90%)
+     A  |  dp_optima             |  0.30  |   67.40%  |  ALTO  (p < 70%)
+  ···
+     A  |  parcial_50pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     A  |  parcial_50pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     A  |  parcial_50pct         |  0.30  |  100.00%  |  BAJO  (p ≥ 90%)
+  ···
+     A  |  parcial_70pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     A  |  parcial_70pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     A  |  parcial_70pct         |  0.30  |   99.90%  |  BAJO  (p ≥ 90%)
+  ···
+     A  |  parcial_90pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     A  |  parcial_90pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     A  |  parcial_90pct         |  0.30  |   99.90%  |  BAJO  (p ≥ 90%)
+  ···
+     A  |  greedy                |  0.10  |   87.36%  |  MEDIO (70% ≤ p < 90%)
+     A  |  greedy                |  0.20  |   74.14%  |  MEDIO (70% ≤ p < 90%)
+     A  |  greedy                |  0.30  |   67.40%  |  ALTO  (p < 70%)
+  ···
+     A  |  mc_mejor              |  0.10  |   87.36%  |  MEDIO (70% ≤ p < 90%)
+     A  |  mc_mejor              |  0.20  |   74.14%  |  MEDIO (70% ≤ p < 90%)
+     A  |  mc_mejor              |  0.30  |   67.40%  |  ALTO  (p < 70%)
+  ···
+     B  |  dp_optima             |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  dp_optima             |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  dp_optima             |  0.30  |   99.98%  |  BAJO  (p ≥ 90%)
+  ···
+     B  |  parcial_50pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  parcial_50pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  parcial_50pct         |  0.30  |  100.00%  |  BAJO  (p ≥ 90%)
+  ···
+     B  |  parcial_70pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  parcial_70pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  parcial_70pct         |  0.30  |   99.98%  |  BAJO  (p ≥ 90%)
+  ···
+     B  |  parcial_90pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  parcial_90pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     B  |  parcial_90pct         |  0.30  |   99.98%  |  BAJO  (p ≥ 90%)
+  ···
+     B  |  greedy                |  0.10  |   50.98%  |  ALTO  (p < 70%)
+     B  |  greedy                |  0.20  |   51.60%  |  ALTO  (p < 70%)
+     B  |  greedy                |  0.30  |   52.70%  |  ALTO  (p < 70%)
+  ···
+     B  |  mc_mejor              |  0.10  |   50.92%  |  ALTO  (p < 70%)
+     B  |  mc_mejor              |  0.20  |   51.20%  |  ALTO  (p < 70%)
+     B  |  mc_mejor              |  0.30  |   52.76%  |  ALTO  (p < 70%)
+  ···
+     C  |  dp_optima             |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  dp_optima             |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  dp_optima             |  0.30  |  100.00%  |  BAJO  (p ≥ 90%)
+  ···
+     C  |  parcial_50pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  parcial_50pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  parcial_50pct         |  0.30  |  100.00%  |  BAJO  (p ≥ 90%)
+  ···
+     C  |  parcial_70pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  parcial_70pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  parcial_70pct         |  0.30  |  100.00%  |  BAJO  (p ≥ 90%)
+  ···
+     C  |  parcial_90pct         |  0.10  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  parcial_90pct         |  0.20  |  100.00%  |  BAJO  (p ≥ 90%)
+     C  |  parcial_90pct         |  0.30  |  100.00%  |  BAJO  (p ≥ 90%)
+  ···
+     C  |  greedy                |  0.10  |   95.82%  |  BAJO  (p ≥ 90%)
+     C  |  greedy                |  0.20  |   81.26%  |  MEDIO (70% ≤ p < 90%)
+     C  |  greedy                |  0.30  |   72.80%  |  MEDIO (70% ≤ p < 90%)
+  ···
+     C  |  mc_mejor              |  0.10  |   51.34%  |  ALTO  (p < 70%)
+     C  |  mc_mejor              |  0.20  |   51.78%  |  ALTO  (p < 70%)
+     C  |  mc_mejor              |  0.30  |   52.12%  |  ALTO  (p < 70%)
+
+──────────────────────────────────────────────────────────────────────
+Tiempo total de experimentación: 16.71 s
+======================================================================

@@ -41,7 +41,7 @@ import logging
 import math
 import random
 from dataclasses import dataclass, field
-from typing import List, Optional, Sequence
+from typing import Dict, List, Optional, Sequence
 
 logger = logging.getLogger(__name__)
 
@@ -231,8 +231,11 @@ def robustness_analysis(
         percentile_95_dur=p95_dur,
     )
 
+    # CORRECCIÓN: la llamada original usaba '%%' en el string de formato del
+    # logger, lo que producía un error de formato en tiempo de ejecución.
+    # Se reemplaza con f-string para garantizar el formato correcto.
     logger.info(
-        "Robustez: P(factible)=%.1%% IC[%.1%%, %.1%%] dur_media=%.1fh p95=%.1fh",
+        "Robustez: P(factible)=%.1f%% IC[%.1f%%, %.1f%%] dur_media=%.1fh p95=%.1fh",
         p_hat * 100, ci_lower * 100, ci_upper * 100, mean_dur, p95_dur,
     )
 
@@ -277,6 +280,6 @@ def sensitivity_cv(
             seed=seed,
         )
         results[cv] = round(r.p_feasible, 4)
-        logger.info("cv=%.2f -> P(factible)=%.1%%", cv, r.p_feasible * 100)
+        logger.info("cv=%.2f -> P(factible)=%.1f%%", cv, r.p_feasible * 100)
 
     return results

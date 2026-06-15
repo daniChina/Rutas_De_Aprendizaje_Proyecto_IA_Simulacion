@@ -1,56 +1,78 @@
 # Proyecto Final IA — Rutas de Aprendizaje Óptimas
 
-Sistema híbrido que genera rutas de aprendizaje personalizadas combinando un
-algoritmo clásico de optimización (knapsack con restricciones de precedencia en DAG)
-con un Modelo de Lenguaje Grande (LLM) como evaluador semántico de utilidad.
+Sistema híbrido que genera rutas de aprendizaje personalizadas combinando:
+- un modelo formal de selección de cursos en un **DAG** con prerrequisitos,
+- una evaluación semántica de relevancia con un **LLM**,
+- un solver híbrido que compara **DP exacto / greedy / Monte Carlo**.
 
 ---
 
-## Estructura del proyecto
+## ¿Qué hace este proyecto?
 
-```
-ruta-aprendizaje/
+El objetivo es construir una ruta de cursos que maximice la utilidad total del alumno
+respecto a un objetivo de aprendizaje en lenguaje natural, respetando:
+- la duración máxima disponible `T_max`,
+- la clausura de prerrequisitos del DAG.
+
+Se trata de una variante del problema de la mochila con dependencias, donde el valor
+semántico de cada curso no es fijo, sino que se infiere con un Modelo de Lenguaje.
+
+---
+
+## Estructura principal del proyecto
+
+```text
+.
 ├── data/
 │   ├── raw/
-│   │   └── cursos.json                  # Dataset base: 35 cursos (Fase 1)
+│   │   └── cursos.json                  # Dataset base de 35 cursos
 │   ├── instances/
-│   │   ├── instancia_A_pequena.json     # 10 cursos, T_max=80 h  — sanity check
-│   │   ├── instancia_B_mediana.json     # 22 cursos, T_max=200 h — evaluación intermedia
-│   │   └── instancia_C_grande.json      # 35 cursos, T_max=300 h — estrés del optimizador
-│   └── processed/                       # Instancias evaluadas por el LLM (Fase 2, generado)
+│   │   ├── instancia_A_pequena.json     # 10 cursos, T_max=80 h
+│   │   ├── instancia_B_mediana.json     # 22 cursos, T_max=200 h
+│   │   └── instancia_C_grande.json      # 35 cursos, T_max=300 h
+│   ├── output/                          # Salidas de pipeline.py
+│   └── processed/                       # Instancias evaluadas por el LLM
 ├── docs/
-│   ├── fase1_modelado_formal.md         # Formalización matemática (Fase 1)
-│   └── fase2_llm_integracion.md         # Diseño de prompts y arquitectura LLM (Fase 2)
+│   ├── fase1_modelado_formal.md         # Formalización matemática
+│   └── fase2_llm_integracion.md         # Diseño e ingeniería de prompts
 ├── src/
-│   ├── problem.py                       # Modelo formal: DAG, Course, LearningPathProblem
-│   ├── instance.py                      # Carga y serialización de instancias JSON
-│   ├── run_example.py                   # Demo Fase 1: carga instancias, valida DAG
-│   ├── run_fase2.py                     # Demo Fase 2: evaluación LLM del catálogo
+│   ├── problem.py                       # Modelo formal y validaciones DAG
+│   ├── instance.py                      # Carga y serialización JSON
+│   ├── run_example.py                   # Demo Fase 1
+│   ├── run_fase2.py                     # Demo Fase 2 (evaluación LLM)
+│   ├── run_fase2_batch.py               # Evaluación batch de instancias
+│   ├── run_fase3.py                     # Solución híbrida para instancias reales
 │   ├── llm/
-│   │   ├── __init__.py                  # Exporta la interfaz pública del módulo
-│   │   ├── client.py                    # LLMClient: wrapper OpenAI con reintentos
-│   │   ├── prompts.py                   # System prompt (Few-Shot) + user prompt
-│   │   ├── models.py                    # EvaluacionCurso (Pydantic)
-│   │   ├── evaluator.py                 # evaluar_problema(), guardar_problema_evaluado()
+│   │   ├── client.py                    # Cliente multi-proveedor LLM y reintentos
+│   │   ├── prompts.py                   # Prompt engineering y schema JSON
+│   │   ├── models.py                    # Validación de salida LLM con Pydantic
+│   │   ├── evaluator.py                 # Orquestador de evaluación y guardado
 │   │   └── cache.py                     # Caché local de respuestas LLM
 │   └── solver/
-│       ├── baseline.py                  # Solver DP clásico (Fase 3)
-│       └── llm_assisted.py              # Solver híbrido LLM + DP (Fase 3)
-└── tests/
-    ├── test_problem.py                  # 11 tests — Fase 1 ✅
-    └── test_llm_fase2.py                # 15 tests — Fase 2 ✅
+│       ├── baseline.py                  # DP exacto/heurístico para knapsack con precedencia
+│       ├── llm_assisted.py              # Solver híbrido comparativo DP/Greedy/MC
+│       ├── mc_sampler.py                # Muestreo Monte Carlo de rutas válidas
+│       └── robustness.py                # Análisis de robustez de rutas
+├── tests/
+│   ├── test_problem.py
+│   ├── test_llm_fase2.py
+│   ├── test_llm.py
+│   ├── test_fallback.py
+│   ├── test_fase3.py
+│   └── test_simulacion.py
+├── pipeline.py                          # Pipeline completo de entrada a salida
+├── requirements.txt                     # Dependencias del proyecto
+└── .env.example                         # Ejemplo de configuración LLM
 ```
 
 ---
 
-## Estado del proyecto
+## Estado de implementación
 
-| Fase | Contenido | Estado |
-|------|-----------|--------|
-| **Fase 1** | Modelado formal + Dataset (35 cursos) + Instancias A/B/C | ✅ Completada |
-| **Fase 2** | LLM (Few-Shot, JSON mode, Pydantic, reintentos, caché) | ✅ Completada |
-| **Fase 3** | Algoritmo DP clásico + Solver híbrido | ⏳ Pendiente |
-| **Fase 4** | Experimentos + Informe técnico | ⏳ Pendiente |
+- **Fase 1**: completada — modelado formal del problema, dataset y validación del DAG.
+- **Fase 2**: completada — evaluación semántica de cursos con LLM, prompts estructurados y caché.
+- **Fase 3**: implementado — solver híbrido que ejecuta DP, greedy y Monte Carlo.
+- **Experimentos**: scripts existentes, con espacio para ampliar análisis comparativo.
 
 ---
 
@@ -58,78 +80,153 @@ ruta-aprendizaje/
 
 ```bash
 git clone <URL_DEL_REPO>
-cd ruta-aprendizaje
-
+cd "c:\Computer Science Career\Computer Science Career\!!Third Year\IA\Ultimas modf\Rutas_De_Aprendizaje_Proyecto_IA_Simulacion"
 python -m venv .venv
-source .venv/bin/activate      # Linux / macOS
-# .venv\Scripts\activate       # Windows
-
+.venv\Scripts\activate
 pip install -r requirements.txt
-
-cp .env.example .env
-# Editar .env y agregar OPENAI_API_KEY=sk-...
 ```
+
+Luego copia la configuración de entorno:
+
+```bash
+copy .env.example .env
+```
+
+Edita `.env` y define al menos:
+- `LLM_PROVIDER` (por ejemplo `groq` o `openai`)
+- `LLM_FALLBACK_PROVIDER`
+- `OPENAI_API_KEY` o `GEMINI_API_KEY`
+- `OPENAI_BASE_URL` si usas Groq
 
 ---
 
-## Ejecución
+## Cómo ejecutar
 
-### Fase 1 — Verificar dataset e instancias
+### 1) Validar Fase 1
+
 ```bash
 python src/run_example.py
 ```
-Valida el DAG de los 35 cursos, muestra el orden topológico y verifica las 3 instancias.
 
-### Fase 2 — Evaluación semántica con el LLM
+Verifica el dataset completo y las instancias de prueba, valida el DAG y muestra estadísticas.
+
+### 2) Evaluar instancias con el LLM (Fase 2)
+
 ```bash
 python src/run_fase2.py
 ```
-Carga la Instancia A (10 cursos), llama al LLM para asignar `u(v) ∈ [1,10]` a cada
-curso y guarda el resultado en `data/processed/instancia_A_evaluada.json`.
 
-### Tests
+Carga la instancia mediana, evalúa cada curso con el LLM y guarda el dataset enriquecido en
+`data/processed/`.
+
+### 3) Ejecutar el solver híbrido (Fase 3)
+
 ```bash
-# Todos los tests (sin pytest)
-python tests/test_problem.py
-python tests/test_llm_fase2.py
+python src/run_fase3.py
+```
 
-# Con pytest (si está instalado)
+Resuelve las instancias evaluadas y guarda las rutas óptimas en `outputs/`.
+
+### 4) Ejecutar pipeline completo
+
+```bash
+python pipeline.py --instancia data/instances/instancia_C_grande.json --objetivo "Quiero especializarme en NLP y LLMs"
+```
+
+Ejecuta carga, evaluación semántica y optimización en un único flujo.
+
+### 5) Ejecutar tests
+
+```bash
 python -m pytest tests/ -v
 ```
 
 ---
 
-## Arquitectura del sistema híbrido
+## Casos de uso
 
-```
-cursos.json  (Fase 1)
-     │
-     ▼
-LearningPathProblem          ← src/problem.py + src/instance.py
-     │
-     ▼  evaluar_problema()   ← src/llm/evaluator.py
-LLMClient.evaluar_curso()    ← src/llm/client.py
-  │  └─ construir_system_prompt()  ← Few-Shot + JSON Schema
-  │  └─ construir_user_prompt()    ← objetivo + descripción del curso
-  ▼
-EvaluacionCurso (Pydantic)   ← src/llm/models.py  →  u(v) ∈ [1,10]
-     │
-     ▼
-LearningPathProblem con u(v) → data/processed/*_evaluada.json
-     │
-     ▼  (Fase 3)
-dp_knapsack_dag()            ← src/solver/baseline.py
-     │
-     ▼
-S* ⊆ V  (ruta óptima)
-```
+- **Generación de rutas de aprendizaje personalizadas** para estudiantes que desean un plan estructurado con cursos relevantes a un objetivo profesional.
+- **Evaluación semántica del catálogo** cuando el valor de los cursos depende del objetivo del alumno y no solo de métricas fijas.
+- **Combinación de dependencias y presupuesto**: útil para elegir un conjunto de cursos que cumpla prerrequisitos y límite de horas.
+- **Comparación de estrategias de optimización** entre soluciones exactas, heurísticas y Monte Carlo.
+- **Prototipado de sistemas híbridos** que fusionan algoritmos clásicos de optimización con LLMs como oráculo de utilidad.
 
 ---
 
-## Referencia rápida del modelo formal
+## Cómo funciona el problema
 
-$$S^* = \underset{S \subseteq V}{\arg\max} \sum_{v \in S} u(v)$$
+El problema se modela como:
+- `V`: cursos del dataset.
+- `E`: relaciones de prerrequisitos entre cursos.
+- `T_max`: tiempo máximo disponible.
+- `d(v)`: duración en horas de cada curso.
+- `u(v)`: utilidad semántica inferida por el LLM.
 
-sujeto a $\sum_{v \in S} d(v) \leq T_{\max}$ y a la clausura de prerrequisitos del DAG.
+La meta es seleccionar un subconjunto `S ⊆ V` que:
+- cumpla `Σ d(v) ≤ T_max`,
+- satisfaga la clausura de prerrequisitos (`si v_j ∈ S entonces sus prerrequisitos también`),
+- maximice `Σ u(v)`.
 
-donde $u(v) = \mathcal{F}_{\text{LLM}}(\text{desc}(v),\; \text{objetivo})$ y $d(v)$ es la duración en horas.
+Es una variante del problema de la mochila con precedencias en un grafo acíclico.
+
+---
+
+## Soluciones implementadas
+
+### Fase 1 — Modelo formal y gestión de instancias
+
+- `src/problem.py`: define `Course` y `LearningPathProblem`.
+- `src/instance.py`: carga instancias JSON y serializa problemas.
+- Validación del DAG, orden topológico, selección válida y métricas de utilidad/duración.
+
+### Fase 2 — Evaluación semántica con LLM
+
+- `src/llm/client.py`: cliente multi-proveedor con reintentos y fallback.
+- `src/llm/prompts.py`: prompt engineering con ejemplos few-shot y esquema JSON.
+- `src/llm/evaluator.py`: evalúa cada curso y guarda la instancia enriquecida.
+- `src/llm/cache.py`: caché local para evitar llamadas LLM repetidas.
+
+### Fase 3 — Solver híbrido
+
+- `src/solver/baseline.py`:
+  - DP exacta por máscara de bits para instancias pequeñas (n ≤ 20).
+  - DP heurística para instancias más grandes.
+- `src/solver/llm_assisted.py`:
+  - orquesta DP, greedy y Monte Carlo.
+  - obtiene la mejor solución según utilidad total.
+- `src/solver/mc_sampler.py`: muestreo Monte Carlo de rutas factibles.
+- `src/solver/robustness.py`: análisis de robustez ante variaciones de duración.
+
+### Scripts de soporte
+
+- `src/run_example.py`: demo de carga y validación de la Fase 1.
+- `src/run_fase2.py`: demo de evaluación semántica del catálogo.
+- `src/run_fase3.py`: demo de ejecución del solver híbrido en instancias reales.
+- `pipeline.py`: pipeline completo de evaluación y optimización.
+
+---
+
+## Archivos de salida
+
+- `data/processed/`: instancias evaluadas por el LLM.
+- `outputs/`: rutas óptimas generadas por el solver híbrido.
+- `data/output/`: resultados del pipeline completo.
+
+---
+
+## Configuración del LLM
+
+- Copia `.env.example` a `.env`.
+- Rellena la clave del proveedor elegido y los modelos opcionales.
+- `LLM_PROVIDER` controla el proveedor activo.
+- `LLM_FALLBACK_PROVIDER` define el proveedor de respaldo.
+- `GEMINI_API_KEY` para Gemini.
+- `OPENAI_API_KEY` para OpenAI o Groq.
+- `OPENAI_BASE_URL` para Groq.
+
+---
+
+## Notas finales
+
+Este repositorio integra razonamiento clásico de optimización con evaluación semántica de un LLM.
+Los módulos están separados por fases para facilitar su extensión y validación.

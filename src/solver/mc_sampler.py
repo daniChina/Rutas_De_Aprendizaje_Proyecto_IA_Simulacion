@@ -47,7 +47,8 @@ class MCResult:
     Resultado de una ejecución del solver Monte Carlo.
 
     Attributes:
-        selected_ids:      IDs de cursos en la mejor ruta encontrada.
+        selected_ids:      IDs de cursos en la mejor ruta encontrada,
+                           en orden topológico.
         objective_value:   Utilidad total Σu(v).
         total_duration:    Duración total Σd(v) en horas.
         n_iterations:      Iteraciones ejecutadas.
@@ -117,6 +118,35 @@ def _get_available(
     ]
 
 
+def _topo_sort(index: Dict[str, "_CourseProxy"], prereqs: Dict[str, Set[str]]) -> List[str]:
+    """
+    Orden topológico (Kahn) sobre el subgrafo definido por index y prereqs.
+    Usado para devolver selected_ids en orden topológico en lugar de
+    orden lexicográfico, que puede romper la semántica de precedencias.
+    """
+    in_degree: Dict[str, int] = {cid: 0 for cid in index}
+    for cid, pset in prereqs.items():
+        for p in pset:
+            if p in index:
+                in_degree[cid] += 1
+
+    queue = [cid for cid, deg in in_degree.items() if deg == 0]
+    result: List[str] = []
+
+    while queue:
+        # Orden determinista dentro del mismo nivel de precedencia
+        queue.sort()
+        node = queue.pop(0)
+        result.append(node)
+        for cid in index:
+            if node in prereqs[cid]:
+                in_degree[cid] -= 1
+                if in_degree[cid] == 0:
+                    queue.append(cid)
+
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Solver principal
 # ---------------------------------------------------------------------------
@@ -148,7 +178,8 @@ def mc_path_sampler(
         temperature:  Parámetro de exploración (default = 1.0).
 
     Returns:
-        MCResult con la mejor ruta S* y métricas del proceso de búsqueda.
+        MCResult con la mejor ruta S* (en orden topológico) y métricas
+        del proceso de búsqueda.
 
     Raises:
         ValueError: Si ningún curso tiene utilidad asignada (LLM no ejecutado).
@@ -169,7 +200,10 @@ def mc_path_sampler(
     }
     prereqs = _build_prereq_map(list(index.values()), index)
 
-    best_ids: List[str] = []
+    # Orden topológico completo del grafo — usado para ordenar la selección final
+    topo_order = _topo_sort(index, prereqs)
+
+    best_set: Set[str] = set()
     best_value: float = -1.0
     n_feasible: int = 0
     convergence_iter: int = 0
@@ -203,12 +237,16 @@ def mc_path_sampler(
 
         if current_value > best_value:
             best_value = current_value
-            best_ids = sorted(selected)
+            best_set = selected.copy()
             convergence_iter = iteration
             logger.debug(
-                "Mejor en iter %d: %d cursos u=%.1f", iteration, len(best_ids), best_value
+                "Mejor en iter %d: %d cursos u=%.1f", iteration, len(best_set), best_value
             )
 
+    # CORRECCIÓN: devolver IDs en orden topológico, no lexicográfico.
+    # sorted(selected) producía un orden arbitrario que podía romper la
+    # semántica de precedencias esperada por los callers.
+    best_ids = [cid for cid in topo_order if cid in best_set]
     best_duration = sum(index[cid].duration for cid in best_ids)
 
     logger.info(
@@ -235,6 +273,7 @@ def convergence_analysis(
     n_iterations: int = 2000,
     checkpoints: Optional[List[int]] = None,
     seed: int = 42,
+    temperature: float = 1.0,
 ) -> Dict[int, float]:
     """
     Ejecuta el sampler registrando la mejor utilidad en cada checkpoint.
@@ -245,6 +284,10 @@ def convergence_analysis(
         n_iterations: Total de iteraciones.
         checkpoints:  Iteraciones en que se registra el mejor valor encontrado.
         seed:         Semilla para reproducibilidad.
+        temperature:  Temperatura del muestreo softmax (default 1.0).
+                      CORRECCIÓN: antes se ignoraba este parámetro y siempre
+                      se usaba temperature=1.0 implícitamente (math.exp(u)).
+                      Ahora es consistente con mc_path_sampler.
 
     Returns:
         {iteracion: mejor_utilidad_acumulada_hasta_ese_punto}
@@ -273,7 +316,8 @@ def convergence_analysis(
 
         while available:
             utilities = [index[cid].utility for cid in available]
-            weights = [math.exp(u) for u in utilities]
+            # CORRECCIÓN: usar el parámetro temperature en lugar de exp(u) fijo.
+            weights = [math.exp(u / temperature) for u in utilities]
             total_w = sum(weights)
             probs = [w / total_w for w in weights]
             chosen = random.choices(available, weights=probs, k=1)[0]

@@ -1,0 +1,449 @@
+{
+  "metadata": {
+    "timestamp": "2026-06-14T23:13:55.199448",
+    "instancia": "instancia_C",
+    "t_max_h": 300.0,
+    "objetivo_usuario": "Quiero especializarme en NLP y LLMs",
+    "solver_usado": "monte_carlo",
+    "tiempo_pipeline_s": 7.476
+  },
+  "solucion": {
+    "n_cursos": 11,
+    "utilidad_total": 74.0,
+    "duracion_total_h": 300.0,
+    "uso_presupuesto_pct": 100.0,
+    "utilidad_por_hora": 0.2467,
+    "es_valida": true,
+    "secuencia": [
+      {
+        "orden": 1,
+        "id": "CS_101",
+        "titulo": "Fundamentos de Programación en Python",
+        "duracion_horas": 20,
+        "utilidad": 6.0,
+        "prerrequisitos": [],
+        "justificacion_llm": "Fundamentos de programación"
+      },
+      {
+        "orden": 2,
+        "id": "CS_102",
+        "titulo": "Álgebra Lineal para Ciencia de Datos",
+        "duracion_horas": 25,
+        "utilidad": 7.0,
+        "prerrequisitos": [],
+        "justificacion_llm": "Álgebra lineal para ciencia de datos"
+      },
+      {
+        "orden": 3,
+        "id": "CS_103",
+        "titulo": "Estadística y Probabilidad Básica",
+        "duracion_horas": 25,
+        "utilidad": 5.0,
+        "prerrequisitos": [],
+        "justificacion_llm": "Estadística y probabilidad básica"
+      },
+      {
+        "orden": 4,
+        "id": "CS_105",
+        "titulo": "Lógica Computacional y Pensamiento Algorítmico",
+        "duracion_horas": 20,
+        "utilidad": 6.0,
+        "prerrequisitos": [],
+        "justificacion_llm": "Lógica computacional y pensamiento algorítmico"
+      },
+      {
+        "orden": 5,
+        "id": "CS_201",
+        "titulo": "Programación Orientada a Objetos con Python",
+        "duracion_horas": 25,
+        "utilidad": 7.0,
+        "prerrequisitos": [
+          "CS_101"
+        ],
+        "justificacion_llm": "Programación orientada a objetos"
+      },
+      {
+        "orden": 6,
+        "id": "CS_202",
+        "titulo": "Cálculo y Optimización Matemática",
+        "duracion_horas": 30,
+        "utilidad": 5.0,
+        "prerrequisitos": [
+          "CS_102"
+        ],
+        "justificacion_llm": "Cálculo y optimización matemática"
+      },
+      {
+        "orden": 7,
+        "id": "CS_203",
+        "titulo": "Estadística Inferencial y Pruebas de Hipótesis",
+        "duracion_horas": 30,
+        "utilidad": 6.0,
+        "prerrequisitos": [
+          "CS_103"
+        ],
+        "justificacion_llm": "Estadística inferencial y pruebas de hipótesis"
+      },
+      {
+        "orden": 8,
+        "id": "CS_205",
+        "titulo": "Estructuras de Datos y Algoritmos Avanzados",
+        "duracion_horas": 30,
+        "utilidad": 7.0,
+        "prerrequisitos": [
+          "CS_101",
+          "CS_105"
+        ],
+        "justificacion_llm": "Estructuras de datos y algoritmos avanzados"
+      },
+      {
+        "orden": 9,
+        "id": "CS_301",
+        "titulo": "Análisis Exploratorio y Visualización de Datos",
+        "duracion_horas": 25,
+        "utilidad": 8.0,
+        "prerrequisitos": [
+          "CS_201",
+          "CS_203"
+        ],
+        "justificacion_llm": "Análisis exploratorio y visualización de datos"
+      },
+      {
+        "orden": 10,
+        "id": "CS_302",
+        "titulo": "Machine Learning Supervisado",
+        "duracion_horas": 40,
+        "utilidad": 9.0,
+        "prerrequisitos": [
+          "CS_202",
+          "CS_203",
+          "CS_201"
+        ],
+        "justificacion_llm": "Machine learning supervisado"
+      },
+      {
+        "orden": 11,
+        "id": "CS_304",
+        "titulo": "Álgebra Lineal Numérica Aplicada a ML",
+        "duracion_horas": 30,
+        "utilidad": 8.0,
+        "prerrequisitos": [
+          "CS_202",
+          "CS_205"
+        ],
+        "justificacion_llm": "Álgebra lineal numérica aplicada a ML"
+      }
+    ]
+  },
+  "robustez": {
+    "cv": 0.2,
+    "n_simulaciones": 5000,
+    "p_feasible": 0.5178,
+    "ic_95_lower": 0.5039411376361914,
+    "ic_95_upper": 0.5316315311709109,
+    "mean_dur_h": 299.56099267988515,
+    "std_dur_h": 18.123851266505525,
+    "p95_dur_h": 329.552954612194,
+    "nivel_riesgo": "ALTO  (p < 70%)"
+  },
+  "comparativa_solvers": {
+    "dp": {
+      "utilidad": 26.0,
+      "duracion_h": 90.0,
+      "n_cursos": 4
+    },
+    "greedy": {
+      "utilidad": 68.0,
+      "duracion_h": 280.0,
+      "n_cursos": 11
+    },
+    "monte_carlo": {
+      "utilidad": 74.0,
+      "duracion_h": 300.0,
+      "n_cursos": 11,
+      "n_iter": 2000
+    }
+  },
+  "catalogo_evaluado": [
+    {
+      "id": "CS_501",
+      "titulo": "Procesamiento de Lenguaje Natural (NLP)",
+      "duracion_horas": 45,
+      "utilidad": 10.0,
+      "en_solucion": false,
+      "justificacion": "Procesamiento de lenguaje natural"
+    },
+    {
+      "id": "CS_601",
+      "titulo": "Transformers y Modelos de Lenguaje Grande (LLMs)",
+      "duracion_horas": 50,
+      "utilidad": 10.0,
+      "en_solucion": false,
+      "justificacion": "Transformers y modelos de lenguaje grande"
+    },
+    {
+      "id": "CS_302",
+      "titulo": "Machine Learning Supervisado",
+      "duracion_horas": 40,
+      "utilidad": 9.0,
+      "en_solucion": true,
+      "justificacion": "Machine learning supervisado"
+    },
+    {
+      "id": "CS_402",
+      "titulo": "Redes Neuronales y Deep Learning",
+      "duracion_horas": 50,
+      "utilidad": 9.0,
+      "en_solucion": false,
+      "justificacion": "Redes neuronales y deep learning"
+    },
+    {
+      "id": "CS_701",
+      "titulo": "Ingeniería de Prompts y LLMOps",
+      "duracion_horas": 40,
+      "utilidad": 9.0,
+      "en_solucion": false,
+      "justificacion": "Ingeniería de prompts y LLMOps"
+    },
+    {
+      "id": "CS_301",
+      "titulo": "Análisis Exploratorio y Visualización de Datos",
+      "duracion_horas": 25,
+      "utilidad": 8.0,
+      "en_solucion": true,
+      "justificacion": "Análisis exploratorio y visualización de datos"
+    },
+    {
+      "id": "CS_304",
+      "titulo": "Álgebra Lineal Numérica Aplicada a ML",
+      "duracion_horas": 30,
+      "utilidad": 8.0,
+      "en_solucion": true,
+      "justificacion": "Álgebra lineal numérica aplicada a ML"
+    },
+    {
+      "id": "CS_401",
+      "titulo": "Machine Learning No Supervisado",
+      "duracion_horas": 35,
+      "utilidad": 8.0,
+      "en_solucion": false,
+      "justificacion": "Machine learning no supervisado"
+    },
+    {
+      "id": "CS_404",
+      "titulo": "Feature Engineering y Selección de Modelos",
+      "duracion_horas": 30,
+      "utilidad": 8.0,
+      "en_solucion": false,
+      "justificacion": "Feature engineering y selección de modelos"
+    },
+    {
+      "id": "CS_603",
+      "titulo": "Sistemas de Diálogo y Chatbots con IA",
+      "duracion_horas": 40,
+      "utilidad": 8.0,
+      "en_solucion": false,
+      "justificacion": "Sistemas de diálogo y chatbots con IA"
+    },
+    {
+      "id": "CS_705",
+      "titulo": "Proyecto Integrador de Sistemas de IA",
+      "duracion_horas": 60,
+      "utilidad": 8.0,
+      "en_solucion": false,
+      "justificacion": "Proyecto integrador de sistemas de IA"
+    },
+    {
+      "id": "CS_102",
+      "titulo": "Álgebra Lineal para Ciencia de Datos",
+      "duracion_horas": 25,
+      "utilidad": 7.0,
+      "en_solucion": true,
+      "justificacion": "Álgebra lineal para ciencia de datos"
+    },
+    {
+      "id": "CS_201",
+      "titulo": "Programación Orientada a Objetos con Python",
+      "duracion_horas": 25,
+      "utilidad": 7.0,
+      "en_solucion": true,
+      "justificacion": "Programación orientada a objetos"
+    },
+    {
+      "id": "CS_205",
+      "titulo": "Estructuras de Datos y Algoritmos Avanzados",
+      "duracion_horas": 30,
+      "utilidad": 7.0,
+      "en_solucion": true,
+      "justificacion": "Estructuras de datos y algoritmos avanzados"
+    },
+    {
+      "id": "CS_305",
+      "titulo": "Modelos Probabilísticos y Redes Bayesianas",
+      "duracion_horas": 35,
+      "utilidad": 7.0,
+      "en_solucion": false,
+      "justificacion": "Modelos probabilísticos y redes bayesianas"
+    },
+    {
+      "id": "CS_405",
+      "titulo": "Inferencia Bayesiana y Métodos Variacionales",
+      "duracion_horas": 40,
+      "utilidad": 7.0,
+      "en_solucion": false,
+      "justificacion": "Inferencia bayesiana y métodos variacionales"
+    },
+    {
+      "id": "CS_504",
+      "titulo": "MLOps y Ciclo de Vida del Modelo en Producción",
+      "duracion_horas": 40,
+      "utilidad": 7.0,
+      "en_solucion": false,
+      "justificacion": "MLOps y ciclo de vida del modelo en producción"
+    },
+    {
+      "id": "CS_101",
+      "titulo": "Fundamentos de Programación en Python",
+      "duracion_horas": 20,
+      "utilidad": 6.0,
+      "en_solucion": true,
+      "justificacion": "Fundamentos de programación"
+    },
+    {
+      "id": "CS_105",
+      "titulo": "Lógica Computacional y Pensamiento Algorítmico",
+      "duracion_horas": 20,
+      "utilidad": 6.0,
+      "en_solucion": true,
+      "justificacion": "Lógica computacional y pensamiento algorítmico"
+    },
+    {
+      "id": "CS_203",
+      "titulo": "Estadística Inferencial y Pruebas de Hipótesis",
+      "duracion_horas": 30,
+      "utilidad": 6.0,
+      "en_solucion": true,
+      "justificacion": "Estadística inferencial y pruebas de hipótesis"
+    },
+    {
+      "id": "CS_303",
+      "titulo": "Ingeniería de Datos y Pipelines ETL",
+      "duracion_horas": 35,
+      "utilidad": 6.0,
+      "en_solucion": false,
+      "justificacion": "Ingeniería de datos y pipelines ETL"
+    },
+    {
+      "id": "CS_403",
+      "titulo": "Big Data con Apache Spark",
+      "duracion_horas": 40,
+      "utilidad": 6.0,
+      "en_solucion": false,
+      "justificacion": "Big data con Apache Spark"
+    },
+    {
+      "id": "CS_502",
+      "titulo": "Visión por Computadora con Deep Learning",
+      "duracion_horas": 45,
+      "utilidad": 6.0,
+      "en_solucion": false,
+      "justificacion": "Visión por computadora con deep learning"
+    },
+    {
+      "id": "CS_602",
+      "titulo": "Detección de Objetos y Segmentación Avanzada",
+      "duracion_horas": 45,
+      "utilidad": 6.0,
+      "en_solucion": false,
+      "justificacion": "Detección de objetos y segmentación avanzada"
+    },
+    {
+      "id": "CS_704",
+      "titulo": "IA Generativa: Modelos de Difusión y GANs",
+      "duracion_horas": 50,
+      "utilidad": 6.0,
+      "en_solucion": false,
+      "justificacion": "IA generativa: modelos de difusión y GANs"
+    },
+    {
+      "id": "CS_103",
+      "titulo": "Estadística y Probabilidad Básica",
+      "duracion_horas": 25,
+      "utilidad": 5.0,
+      "en_solucion": true,
+      "justificacion": "Estadística y probabilidad básica"
+    },
+    {
+      "id": "CS_202",
+      "titulo": "Cálculo y Optimización Matemática",
+      "duracion_horas": 30,
+      "utilidad": 5.0,
+      "en_solucion": true,
+      "justificacion": "Cálculo y optimización matemática"
+    },
+    {
+      "id": "CS_503",
+      "titulo": "Sistemas de Recomendación",
+      "duracion_horas": 35,
+      "utilidad": 5.0,
+      "en_solucion": false,
+      "justificacion": "Sistemas de recomendación"
+    },
+    {
+      "id": "CS_604",
+      "titulo": "Ética, Equidad e IA Responsable",
+      "duracion_horas": 25,
+      "utilidad": 5.0,
+      "en_solucion": false,
+      "justificacion": "Ética, equidad e IA responsable"
+    },
+    {
+      "id": "CS_702",
+      "titulo": "Visión Computacional en Producción",
+      "duracion_horas": 40,
+      "utilidad": 5.0,
+      "en_solucion": false,
+      "justificacion": "Visión computacional en producción"
+    },
+    {
+      "id": "CS_204",
+      "titulo": "SQL Avanzado y Modelado de Datos",
+      "duracion_horas": 25,
+      "utilidad": 4.0,
+      "en_solucion": false,
+      "justificacion": "SQL avanzado y modelado de datos"
+    },
+    {
+      "id": "CS_505",
+      "titulo": "Aprendizaje por Refuerzo Clásico",
+      "duracion_horas": 40,
+      "utilidad": 4.0,
+      "en_solucion": false,
+      "justificacion": "Aprendizaje por refuerzo clásico"
+    },
+    {
+      "id": "CS_605",
+      "titulo": "Aprendizaje por Refuerzo Profundo (Deep RL)",
+      "duracion_horas": 50,
+      "utilidad": 4.0,
+      "en_solucion": false,
+      "justificacion": "Aprendizaje por refuerzo profundo"
+    },
+    {
+      "id": "CS_703",
+      "titulo": "Agentes Autónomos con IA y Sistemas Multi-Agente",
+      "duracion_horas": 45,
+      "utilidad": 4.0,
+      "en_solucion": false,
+      "justificacion": "Agentes autónomos con IA y sistemas multi-agente"
+    },
+    {
+      "id": "CS_104",
+      "titulo": "Introducción a Bases de Datos Relacionales",
+      "duracion_horas": 20,
+      "utilidad": 3.0,
+      "en_solucion": false,
+      "justificacion": "Bases de datos relacionales"
+    }
+  ]
+}

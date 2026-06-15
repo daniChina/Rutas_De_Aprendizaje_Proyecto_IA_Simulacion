@@ -1,0 +1,4 @@
+instancia_label,instancia_id,n_cursos,n_aristas,t_max,espacio_dp,dp_utilidad,dp_tiempo_s,dp_n_estados,dp_ejecutado,greedy_utilidad,greedy_tiempo_s,greedy_gap_pct,mc_utilidad_media,mc_utilidad_std,mc_tiempo_medio_s,mc_tiempo_std_s,mc_gap_pct,mc_n_iter,mc_temperatura,mc_n_reps
+A,instancia_A,10,11,80.0,800,22.0,0.000243,11,True,22.0,0.000148,0.0,22.0,0.0,0.024548,0.001963,0.0,2000,1.0,10
+B,instancia_B,22,30,200.0,4400,34.0,0.001407,4422,True,48.0,0.000122,-41.1765,49.0,0.0,0.098921,0.013444,-44.1176,2000,1.0,10
+C,instancia_C,35,53,300.0,10500,58.0,0.002318,10535,True,72.0,0.000136,-24.1379,81.0,0.0,0.156878,0.014497,-39.6552,2000,1.0,10

@@ -20,6 +20,14 @@ El solver híbrido orquesta tres estrategias y devuelve la mejor:
 
 El resultado final siempre incluye el DP como referencia exacta cuando
 es tratable (n × W ≤ MAX_DP_STATES), y Monte Carlo como respaldo.
+
+Nota sobre MAX_DP_STATES
+------------------------
+El criterio n × W es una heurística del coste de tiempo O(n · W). El coste
+real de memoria también es O(n · W) porque se almacena la tabla completa
+para el backtracking. Para instancias donde la memoria sea el cuello de
+botella antes que el tiempo, considera reducir MAX_DP_STATES o usar
+granularidad_dp > 1 para reducir W.
 """
 
 from __future__ import annotations
@@ -38,6 +46,8 @@ logger = logging.getLogger(__name__)
 
 # Umbral de estados DP por encima del cual se omite el DP exacto en favor de MC.
 # 35 nodos × 300 h = 10 500, muy por debajo del límite de 500 000.
+# Nota: este umbral aproxima el coste de tiempo; el coste de memoria es
+# proporcional a n × W × sizeof(float), ~84 KB para la instancia C.
 MAX_DP_STATES = 500_000
 
 
@@ -187,6 +197,7 @@ def llm_assisted_solver(
 
     # ---------------------------------------------------------------
     # 2. Decidir si DP exacto es tratable
+    #    n × W aproxima el coste de tiempo y memoria (ver docstring).
     # ---------------------------------------------------------------
     n = len(problem.courses)
     W = int(problem.t_max // granularidad_dp)
@@ -221,7 +232,7 @@ def llm_assisted_solver(
     )
     mc_result = mc_path_sampler(
         problem,
-        n_iter=mc_iterations,
+        n_iterations=mc_iterations,
         temperature=mc_temperature,
         seed=mc_seed,
     )

@@ -1,0 +1,41 @@
+{
+  "experimento": "4b",
+  "descripcion": "Sensibilidad P(factible) vs cv — ruta DP instancia B",
+  "instancia": "instancia_B",
+  "ruta": "dp_optima",
+  "n_simulaciones": 3000,
+  "resultados": [
+    {
+      "cv": 0.05,
+      "p_factible": 1.0
+    },
+    {
+      "cv": 0.1,
+      "p_factible": 1.0
+    },
+    {
+      "cv": 0.15,
+      "p_factible": 1.0
+    },
+    {
+      "cv": 0.2,
+      "p_factible": 1.0
+    },
+    {
+      "cv": 0.25,
+      "p_factible": 1.0
+    },
+    {
+      "cv": 0.3,
+      "p_factible": 0.9997
+    },
+    {
+      "cv": 0.35,
+      "p_factible": 0.9997
+    },
+    {
+      "cv": 0.4,
+      "p_factible": 0.9973
+    }
+  ]
+}

@@ -429,6 +429,12 @@ class LLMClient:
         def _evaluate() -> EvaluacionCurso:
             cache_key = self._cache_key(user_prompt) if self._cache else None
             if cache_key is not None:
+                logger.info(
+                    "♫ Cache lookup para curso %s: key=%s en %s",
+                    curso_id,
+                    cache_key[:8],
+                    self._cache._path,
+                )
                 cached = self._cache.get(cache_key)
                 if cached is not None:
                     logger.info("♫ Cache hit para curso %s", curso_id)
@@ -440,13 +446,19 @@ class LLMClient:
                             curso_id,
                             e,
                         )
+                else:
+                    logger.info("♫ Cache miss para curso %s", curso_id)
 
             raw = self._call(user_prompt)
             evaluacion = _parse_response(raw)
 
             if cache_key is not None:
                 self._cache.set(cache_key, raw)
-                logger.info("♫ Cache guardada para curso %s", curso_id)
+                logger.info(
+                    "♫ Cache guardada para curso %s en %s",
+                    curso_id,
+                    self._cache._path,
+                )
 
             return evaluacion
 
